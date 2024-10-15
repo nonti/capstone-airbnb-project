@@ -1,0 +1,135 @@
+.location {
+  padding: 20px;
+  min-height: 100vh;
+}
+
+.location-list {
+  display: flex;
+  flex-direction: column; 
+  gap: 20px; 
+  align-items: center; 
+}
+
+.location-card {
+  display: flex; 
+  align-items: center;
+  background-color:transparent; 
+  border: 1px solid #ccc;
+  border-radius: 12px;
+  text-decoration: none;
+  color: #000; 
+  width: 70%;
+  max-width: 800px; 
+  box-shadow: 0 4px 8px rgba(255, 182, 193, 0.3); 
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+}
+
+.location-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 16px rgba(255, 182, 193, 0.5); 
+}
+
+.location-image {
+  max-width: fit-content; 
+  height: 150px; 
+  object-fit: cover;
+  border-top-left-radius: 12px;
+  border-bottom-left-radius: 12px;
+  margin-left: 10px;
+}
+
+.location-card-content {
+  padding: 20px;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.location-card-content h2 {
+  margin: 0 0 10px;
+  color: #000;
+}
+
+.location-description {
+  list-style: none; 
+  padding: 0;
+  margin: 10px 0 0 0; 
+}
+
+.location-description li {
+  margin: 5px 0;
+  color: #4d4d4d; 
+}
+
+.location-description li span {
+  font-weight: bold;
+  color: #000; 
+  
+}
+
+.location-page h1 {
+  text-align: center;
+  color: #000; 
+  margin-bottom: 30px;
+  font-family: 'Comic Sans MS', cursive; 
+}
+
+.star-rating {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px; 
+  font-size: 1em;
+  justify-content: center; 
+}
+
+.stars {
+  color: #000; 
+  font-size: 1.2em; 
+  margin-left: 5px; 
+}
+
+.review-text {
+  margin-left: 5px; 
+  color: #000;
+}
+
+.search-page-info {
+  padding: 20px;
+}
+
+.search-page-info > p {
+  margin-bottom: 10px;
+  font-size: 14px;
+}
+
+.search-page-info > h1 {
+  margin-bottom: 30px;
+}
+
+.search-page-info > button {
+  border-radius: 30px;
+  text-transform: inherit;
+  margin: 5px;
+  border: 1px solid #ccc;
+  color: #ccc;
+}
+
+.flex-container {
+  display: flex;
+  justify-content: space-between; 
+  align-items: flex-start; 
+  /* flex-flow: row nowrap; */ 
+  flex-direction: row; 
+  flex-wrap: nowrap; 
+  align-content: stretch;
+  height: 100%;
+  padding: 15px;
+  gap: 5px;
+
+}
+
+.flex-container > div{
+  border-radius: 5px;
+  padding: 8px;
+}

@@ -1,0 +1,108 @@
+.footer
+{
+    height: 310px;
+    background-color: #F7F7F7;
+    border-top: 1px solid rgb(206, 206, 206);
+    padding: 45px 80px;
+    position: sticky;
+}
+
+.menus-footer
+{
+    display: flex;
+    flex-direction: row;
+}
+
+.item-footer
+{
+    flex: 1;
+}
+
+.item-footer b
+{
+    font-family: 'airbnb-light';
+    font-weight: 900;
+    font-size: 15px;
+    color: #3E2222;
+}
+
+.item-footer p
+{
+    font-family: 'airbnb-light';
+    font-size: 15px;
+    color: #222222;
+    cursor: pointer;
+}
+
+.item-footer p:hover
+{
+    text-decoration: underline;
+}
+
+/** FOOTER BOTTOM ***********************/
+.footer-line
+{
+    margin-top: 40px;
+    border-top: 1px solid lightgray;
+}
+
+.footer-bottom
+{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-family: 'airbnb-light';
+    font-size: 15px;
+    margin-top: 10px;
+}
+
+.footer-left
+{
+    flex: 2;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-evenly;
+    cursor: pointer;
+}
+
+.footer-right
+{
+    flex: 3;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.footer-right-left
+{
+    display: flex;
+    justify-content: space-evenly;
+    flex: 1;
+}
+
+.footer-right-center
+{
+    flex: 2;
+}
+
+.footer-right-right
+{
+    display: flex;
+    justify-content: space-between;
+    flex: 1;
+}
+
+.footer-select  {
+  border: none;
+  outline: none;
+  background-color: inherit;
+}
+
+.footer-center
+{
+    flex: 4;
+}
+

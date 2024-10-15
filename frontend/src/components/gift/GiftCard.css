@@ -1,0 +1,36 @@
+.gift-card-container {
+  display: flex;
+  justify-content: space-between; 
+  padding: 20px 40px 20px 20px; 
+  margin: 0 auto;
+}
+
+.gift-card-info {
+  margin: 0px 150px 0px 50px;
+  padding: 0px 50px 20px 0px;
+  font-size: 46px;
+  font-weight: bold;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.gift-card-img {
+  flex: 1; /* Allow this section to take available space */
+}
+
+.gift-card-img img {
+  padding: 10px 50px 15px 50px;
+  margin: 0px -90px;
+  width: 100%;
+}
+
+.btn-learn {
+  background-color: #000;
+  color: #fff;
+  width: 130px;
+  border-radius: 5px;
+  padding: 20px 20px;
+  font-size: 16px;
+  cursor: pointer;
+}
