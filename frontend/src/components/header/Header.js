@@ -149,7 +149,7 @@ const Header = () => {
                     <p>Online Experiences</p>
                   </div>
                 )}
-                {isScrolled && !isListingPage && !isCreateListingPage&&(
+                {isScrolled && isListingPage && !isCreateListingPage && (
                   <div className="search-bar-container">
                     <div className="search-bar">
                       <div className="search-bar-text">Anywhere</div>
@@ -161,6 +161,19 @@ const Header = () => {
                     </div>
                   </div>
                 )}
+
+                {/* Conditionally render the input search bar only for the listing page */}
+                {!isListingPage && (
+                  <div className="search-bar-container-input">
+                    <div className="search-bar-input">
+                      <input type="text" placeholder="Search" />
+                      <div className="search-icon-div">
+                        <SearchRoundedIcon className="search-icon" />
+                      </div>
+                    </div>
+                  </div>
+                )}
+
                 <div className="profile-container">
                   <Link to='/signin' className='become-a-host-link'>
                     <div className={`become-a-host ${isHomePage ? 'host-white' : 'host-black'}`}>Become a host</div>
@@ -194,7 +207,7 @@ const Header = () => {
       </div>
 
       {/* Show HeaderBottom only on non-location pages */}
-      {!authPaths.includes(location.pathname) && !isLocationPage && !isListingPage && !isAdminPage && !isCreateListingPage && !isListingsPage && !isReservationsPage && (
+      {!authPaths.includes(location.pathname) && !isLocationPage && (isHomePage || isListingPage) && !isAdminPage && !isCreateListingPage && !isListingsPage && !isReservationsPage && (
         <HeaderBottom />
       )}
     </>

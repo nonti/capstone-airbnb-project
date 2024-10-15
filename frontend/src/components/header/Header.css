@@ -103,6 +103,25 @@
   color: #fff;
 }
 
+.search-bar-input{
+  gap: 0.5rem;
+  padding: 0.35rem 1rem;
+  border: 1px solid grey;
+  border-radius: 2rem;
+  box-shadow: 0 1px 2px rgb(0 0 0 / 8%), 0 4px 12px rgb(0 0 0 / 5%);
+}
+
+.search-bar-input input {
+  width: 100%;
+  padding: 0.25rem;
+  border: none;
+  outline: none;
+}
+
+.search-cion-div-input {
+
+}
+
 
 .profile-container {
   display: flex;
