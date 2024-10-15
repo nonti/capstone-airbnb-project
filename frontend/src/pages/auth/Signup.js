@@ -76,6 +76,13 @@ const Signup = () => {
             required
           />
           <input
+            type="file"
+            name='profileImg' 
+            accept="image/*"
+            onChange={handleChange}
+            required
+          />
+          <input
             type="text"
             name='role'
             placeholder='Role'
@@ -83,13 +90,7 @@ const Signup = () => {
             onChange={handleChange}
             required
           />
-          <input
-            type="file"
-            name='profileImg' // Match the name expected in the backend
-            accept="image/*"
-            onChange={handleChange}
-            required
-          />
+          
           <button type='submit'>Sign up</button>
         </div>
         <Link to='/signin' className='link'>Already have an account? <span>Sign in</span></Link>

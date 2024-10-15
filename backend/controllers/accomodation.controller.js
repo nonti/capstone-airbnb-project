@@ -7,13 +7,14 @@ const fs = require('fs');
 
 // Middleware for file upload using multer
 const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, 'uploads/');
+  destination: function(req, file, cb){
+    cb(null, path.join(__dirname, '../public/uploads/'));
   },
-  filename: function (req, file, cb) {
-    cb(null, new Date().toISOString().replace(/:/g, '-') + file.originalname);
+  filename: function(req, file, cb){
+    cb(null, file.originalname);
   }
 });
+
 const upload = multer({ storage: storage });
 //create lissting
 const createListing = async (req, res) => { // Added req and res parameters

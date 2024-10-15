@@ -1,10 +1,10 @@
-const authoriseRole = (...alllowedRoles) => {
+const authoriseRole = (...allowedRoles) => {
   return (req, res, next) => {
-    if(!alllowedRoles.includes(req.user.role)) {
-      return res.status(401).json({ message: 'Unauthorized' });
+    if (!allowedRoles.includes(req.user.role)) {
+      return res.status(403).json({ message: 'Unauthorized role' });
     }
     next();
-  }
-}
+  };
+};
 
-module.exports = authoriseRole
+module.exports = authoriseRole;

@@ -2,11 +2,11 @@ const jwt = require('jsonwebtoken');
 
 const verifyToken = (req, res, next) => {
   let token;
-  let authHeader = req.headers.Authorization || req.headers.authorization;
+  const authHeader = req.headers['authorization']; // Simplified header check
 
   // Check if Authorization header exists and starts with 'Bearer '
   if (authHeader && authHeader.startsWith('Bearer ')) {
-    token = authHeader.split(' ')[1]; // Extract token
+    token = authHeader.split(' ')[1]; // Extract token after 'Bearer '
   }
 
   if (!token) {
@@ -17,10 +17,9 @@ const verifyToken = (req, res, next) => {
     // Verify token and attach decoded user to req.user
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     req.user = decoded;
-    console.log('Decoded user is', req.user);
+    console.log('Decoded user is', req.user); // For debugging
     next();
   } catch (err) {
-    // Handle different JWT errors
     if (err.name === 'TokenExpiredError') {
       return res.status(401).json({ message: 'Token has expired' });
     } else if (err.name === 'JsonWebTokenError') {

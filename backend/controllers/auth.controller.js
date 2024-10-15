@@ -87,7 +87,7 @@ const signin = async (req, res) => {
     }
 
     //generate token
-    const token = jwt.sign({id: user._id}, process.env.JWT_SECRET);
+    const token = jwt.sign({id: user._id, role: user.role}, process.env.JWT_SECRET);
     delete user.password;
 
     res.json({

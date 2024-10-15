@@ -117,9 +117,34 @@
   border: none;
   outline: none;
 }
+.search-bar-input {
+  display: flex;
+  align-items: center;
+  justify-content: space-between; 
+  border: 1px solid #ccc; 
+  border-radius: 25px; 
+  padding: 5px 10px; 
+  width: 100%; 
+}
 
-.search-cion-div-input {
+.search-bar-input input {
+  flex: 1; 
+  border: none;
+  outline: none; 
+}
 
+.search-icon-div-input {
+  display: flex;
+  align-items: center;
+  padding-left: 10px; 
+  backgound-color: #ff0056;
+  border-radius: 3px;
+}
+
+.search-icon-input {
+  font-size: 1.5rem; 
+  color: #333; 
+ 
 }
 
 

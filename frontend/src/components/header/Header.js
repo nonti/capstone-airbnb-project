@@ -143,36 +143,37 @@ const Header = () => {
             ) : (
               <>
                 {!isScrolled && isHomePage && (
-                  <div className="header-text">
-                    <p>Places to stay</p>
-                    <p>Experiences</p>
-                    <p>Online Experiences</p>
-                  </div>
-                )}
-                {isScrolled && isListingPage && !isCreateListingPage && (
-                  <div className="search-bar-container">
-                    <div className="search-bar">
-                      <div className="search-bar-text">Anywhere</div>
-                      <div className="search-bar-text">Any Week</div>
-                      <div className="search-bar-text2">Add guests</div>
-                      <div className="search-icon-div">
-                        <SearchRoundedIcon className="search-icon" />
-                      </div>
-                    </div>
-                  </div>
-                )}
+  <div className="header-text">
+    <p>Places to stay</p>
+    <p>Experiences</p>
+    <p>Online Experiences</p>
+  </div>
+)}
 
-                {/* Conditionally render the input search bar only for the listing page */}
-                {!isListingPage && (
-                  <div className="search-bar-container-input">
-                    <div className="search-bar-input">
-                      <input type="text" placeholder="Search" />
-                      <div className="search-icon-div">
-                        <SearchRoundedIcon className="search-icon" />
-                      </div>
-                    </div>
-                  </div>
-                )}
+{isScrolled && isHomePage && (
+  <div className="search-bar-container">
+    <div className="search-bar">
+      <div className="search-bar-text">Anywhere</div>
+      <div className="search-bar-text">Any Week</div>
+      <div className="search-bar-text2">Add guests</div>
+      <div className="search-icon-div">
+        <SearchRoundedIcon className="search-icon" />
+      </div>
+    </div>
+  </div>
+)}
+
+
+{!isHomePage && (
+  <div className="search-bar-container-input">
+    <div className="search-bar-input">
+      <input type="text" placeholder="Search" />
+      <div className="search-icon-div">
+        <SearchRoundedIcon className="search-icon" />
+      </div>
+    </div>
+  </div>
+)}
 
                 <div className="profile-container">
                   <Link to='/signin' className='become-a-host-link'>

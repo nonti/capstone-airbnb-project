@@ -20,6 +20,10 @@ form {
   margin-bottom: 20px;
 }
 
+.input-container input[type="file"] {
+  display: block;
+  margin-top: 10px;
+}
 
 .input-container input {
   display: flex;
