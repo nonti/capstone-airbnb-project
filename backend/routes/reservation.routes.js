@@ -1,14 +1,17 @@
 const express = require('express');
 const router = express.Router();
-const reservationController = require('../controllers/reservation.controller'); // Adjust the path as necessary
+const reservationController = require('../controllers/reservation.controller');
 
 // Create a new reservation
 router.post('/', reservationController.createReservation);
 
-// Update an existing reservation
-router.put('/reservations/:id', reservationController.updateReservation);
+// Get reservations by host
+router.get('/host/:hostId', reservationController.getReservationByHost); // Use :hostId for clarity
+
+// Get reservations by user
+router.get('/user/:userId', reservationController.getReservationByUser); // Use :userId for clarity
 
 // Delete a reservation
-router.delete('/reservations/:id', reservationController.deleteReservation);
+router.delete('/reservation/:id', reservationController.deleteReservation); // Singular route path for reservation
 
 module.exports = router;

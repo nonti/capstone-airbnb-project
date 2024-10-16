@@ -8,7 +8,7 @@ import Footer from '../components/footer/Footer';
 import Banner from '../components/banner/Banner';
 const Home = () => {
   return (
-    <div>
+    <div className='home-background'>
       <Banner />
       <CardTiles/>
       <Experiences/>

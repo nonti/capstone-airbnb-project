@@ -6,6 +6,7 @@ import AddIcon from "@mui/icons-material/Add";
 import SearchIcon from "@mui/icons-material/Search";
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { format } from 'date-fns';
 
 const HeaderBottom = () => {
   const [guestCount, setGuestCount] = useState(1);
@@ -31,15 +32,6 @@ const HeaderBottom = () => {
         setLocations(response.data);
       } catch (error) {
         console.error('Error fetching locations:', error);
-        if (error.response) {
-          console.error('Response data:', error.response.data);
-          console.error('Response status:', error.response.status);
-          console.error('Response headers:', error.response.headers);
-        } else if (error.request) {
-          console.error('Request data:', error.request);
-        } else {
-          console.error('Error message:', error.message);
-        }
       }
     };
 
@@ -51,11 +43,13 @@ const HeaderBottom = () => {
   };
 
   const handleSearchClick = () => {
+    const formattedCheckInDate = checkInDate ? format(checkInDate, 'yyyy-MM-dd') : null;
+    const formattedCheckOutDate = checkOutDate ? format(checkOutDate, 'yyyy-MM-dd') : null;
     navigate('/locations', {
       state: {
         selectedLocation,
-        checkInDate,
-        checkOutDate,
+        checkInDate: formattedCheckInDate,
+        checkOutDate: formattedCheckOutDate,
         guestCount
       }
     });
@@ -84,28 +78,28 @@ const HeaderBottom = () => {
         </div>
         <div className="border-divider"></div>
         <div className="search-checkin">
-          <div>Check In</div>
-          <div className="search-button">
+            <div>Check In</div>
+            <div className="search-button">
             <DatePicker
               selected={checkInDate}
               onChange={(date) => setCheckInDate(date)}
               placeholderText="Add dates"
               className="date-picker"
             />
+            </div>
           </div>
-        </div>
-        <div className="border-divider"></div>
-        <div className="search-checkout">
-          <div>Check Out</div>
-          <div className="search-button">
+          <div className="border-divider"></div>
+          <div className="search-checkout">
+            <div>Check Out</div>
+            <div className="search-button">
             <DatePicker
               selected={checkOutDate}
               onChange={(date) => setCheckOutDate(date)}
               placeholderText="Add dates"
               className="date-picker"
             />
+            </div>
           </div>
-        </div>
         <div className="border-divider"></div>
         <div className="search-who">
           <span>Guests </span>
@@ -113,7 +107,7 @@ const HeaderBottom = () => {
             className="search-button"
             onClick={() => setShowGuestPopup(true)}
           >
-            {guestCount > 0 ? `Add Guest` : `${guestCount} Guest`}
+            {guestCount > 0 ? `${guestCount} Guest${guestCount > 1 ? 's' : ''}` : 'Add Guest'}
           </button>
         </div>
         {showGuestPopup && (

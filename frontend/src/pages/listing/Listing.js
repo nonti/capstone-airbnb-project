@@ -3,7 +3,6 @@ import StarIcon from "@mui/icons-material/Star";
 import axios from "axios";
 import "@umakantp/react-date-range/dist/styles.css"; // main style file
 import "@umakantp/react-date-range/dist/theme/default.css";
-import { DateRangePicker } from "@umakantp/react-date-range";
 import "./Listing.css";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
@@ -18,7 +17,6 @@ import LocalLaundryServiceOutlinedIcon from "@mui/icons-material/LocalLaundrySer
 import CameraIndoorOutlinedIcon from "@mui/icons-material/CameraIndoorOutlined";
 import DirectionsBikeOutlinedIcon from "@mui/icons-material/DirectionsBikeOutlined";
 import { Button } from "@mui/material";
-import StarBorderIcon from "@mui/icons-material/StarBorder";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import IosShareIcon from "@mui/icons-material/IosShare";
 import AutoAwesomeOutlinedIcon from "@mui/icons-material/AutoAwesomeOutlined";
@@ -36,18 +34,28 @@ import SmokeFreeOutlinedIcon from "@mui/icons-material/SmokeFreeOutlined";
 import CelebrationOutlinedIcon from "@mui/icons-material/CelebrationOutlined";
 import WysiwygOutlinedIcon from "@mui/icons-material/WysiwygOutlined";
 import SanitizerOutlinedIcon from "@mui/icons-material/SanitizerOutlined";
-import LocalPoliceOutlinedIcon from '@mui/icons-material/LocalPoliceOutlined';
-import GppGoodOutlinedIcon from '@mui/icons-material/GppGoodOutlined';
-import StarOutlineOutlinedIcon from '@mui/icons-material/StarOutlineOutlined';
-import MilitaryTechOutlinedIcon from '@mui/icons-material/MilitaryTechOutlined';
+import LocalPoliceOutlinedIcon from "@mui/icons-material/LocalPoliceOutlined";
+import GppGoodOutlinedIcon from "@mui/icons-material/GppGoodOutlined";
+import StarOutlineOutlinedIcon from "@mui/icons-material/StarOutlineOutlined";
+import MilitaryTechOutlinedIcon from "@mui/icons-material/MilitaryTechOutlined";
+import dayjs from 'dayjs';
+import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
+import { MobileDateRangePicker } from '@mui/x-date-pickers-pro/MobileDateRangePicker';
+import { DesktopDateRangePicker } from '@mui/x-date-pickers-pro/DesktopDateRangePicker';
+import { StaticDateRangePicker } from '@mui/x-date-pickers-pro/StaticDateRangePicker';
+import { pickersLayoutClasses } from '@mui/x-date-pickers/PickersLayout';
+
 const Listing = () => {
   const [guests, setGuests] = useState(1);
   const { state } = useLocation();
   const { id } = useParams();
   const [listing, setListing] = useState(state || null);
-  const [checkInDate, setCheckInDate] = useState("");
-  const [checkOutDate, setCheckOutDate] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [checkInDate, setCheckInDate] = useState('');
+  const [checkOutDate, setCheckOutDate] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
@@ -79,8 +87,8 @@ const Listing = () => {
 
   const handleSelect = (ranges) => {
     setSelectionRange(ranges.selection);
-    setCheckInDate(ranges.selections.startDate);
-    setCheckOutDate(ranges.selections.endDate); // Update state with the selected range
+    setCheckInDate(ranges.selection.startDate.toISOString().split("T")[0]);
+    setCheckOutDate(ranges.selection.endDate.toISOString().split("T")[0]);
   };
   const handleGuestChange = (action) => {
     if (action === "increment") {
@@ -91,37 +99,20 @@ const Listing = () => {
   };
 
   const handleReservation = async () => {
-    console.log(
-      "Check-In:",
-      checkInDate,
-      "Check-Out:",
-      checkOutDate,
-      "Guests:",
-      guests
-    );
-
     if (!checkInDate || !checkOutDate || guests < 1) {
-      setErrorMessage(
-        "Please fill in all fields and ensure at least one guest is selected."
-      );
-      toast.error(errorMessage); // Show error
+      const message =
+        "Please fill in all fields and ensure at least one guest is selected.";
+      setErrorMessage(message);
+      toast.error(message);
       return;
     }
 
-    if (
-      !listing.host ||
-      !listing.host._id ||
-      !listing.type ||
-      !listing.reviews ||
-      !listing.accommodationId
-    ) {
-      setErrorMessage(
-        "Required listing information is missing. Please try again."
-      );
-      toast.error(errorMessage); // Show error
-      return;
-    }
-
+    console.log({
+      checkInDate,
+      checkOutDate,
+      guests,
+      listing,
+    });
     const reservationDetails = {
       images: listing.images,
       type: listing.type,
@@ -136,14 +127,15 @@ const Listing = () => {
       host_id: listing.host?._id,
       host: listing.host.username,
       reviews: listing.reviews,
-      rating: listing.rating,
-      accommodation: listing.accommodation?._id, // Reference to accommodation ID
+      ratings: listing.rating,
+      accommodation: listing.accommodation._id, // Reference to accommodation id
       cleaningFee: listing.fees?.cleaningFee || 0,
       serviceFee: listing.fees?.serviceFee || 0,
-      occupancyTaxes: listing.fees?.occupancyTaxesFee || 0,
+      weeklyDiscount: listing.fees?.weeklyDiscount || 0,
+      occupancyTaxesFee: listing.fees?.occupancyTaxesFee || 0,
       description: listing.description,
-      checkIn: checkInDate, // Selected check-in date
-      checkOut: checkOutDate, //
+      checkin: listing.checkInDate,
+      checkout: listing.checkOutDate,
     };
 
     try {
@@ -152,10 +144,18 @@ const Listing = () => {
         reservationDetails
       );
       setListing(response.data);
+      console.log(response.data);
       setErrorMessage(""); // Reset error message
       setLoading(true);
       toast.success("Reservation made successfully!");
-      navigate("/reservations", { state: { listing } });
+      navigate("/reservations", {
+        state: {
+          listingName: listing.title,
+          host: listing.host.username,
+          checkin: listing.checkin,
+          checkout: listing.checkout,
+        },
+      });
     } catch (error) {
       toast.error("Error making reservation. Please try again.");
     }
@@ -165,12 +165,12 @@ const Listing = () => {
 
   return (
     <>
-      <div className="listng-container">
+      <div className="listing-container">
         <h1 className="listing-title">{listing.title}</h1>
         <div className="reviews">
           <div className="rating">
-            <StarOutlineOutlinedIcon className="host-icons" /> {listing.rating} *
-            {listing.reviews} reviews * {listing.location}
+            <StarOutlineOutlinedIcon className="host-icons" /> 5.0 * 120 reviews
+            * {listing.location}
           </div>
           <div className="share-save">
             <IosShareIcon /> <span>Share</span>
@@ -211,7 +211,11 @@ const Listing = () => {
             </p>
           </div>
           <div className="user-info">
-            <img src="https://img.freepik.com/free-photo/cute-girl-with-brown-hair-red-jacket-3d-rendering_1142-54724.jpg?ga=GA1.1.2114915059.1725115900&semt=ais_hybrid" alt="user profile" /> hosted by {listing.host.username}
+            <img
+              src="https://img.freepik.com/free-photo/cute-girl-with-brown-hair-red-jacket-3d-rendering_1142-54724.jpg?ga=GA1.1.2114915059.1725115900&semt=ais_hybrid"
+              alt="user profile"
+            />{" "}
+            hosted by Zoe Barns
           </div>
         </section>
         <hr />
@@ -336,16 +340,20 @@ const Listing = () => {
               <h1>7 nights in New York</h1>
               <p>Start Date: {selectionRange.startDate.toDateString()}</p>
               <p>End Date: {selectionRange.endDate.toDateString()}</p>
-              <DateRangePicker
-                ranges={[selectionRange]}
-                onChange={handleSelect}
-              />
+              
             </section>
           </div>
           <div class="item2">
             <div className="pricing-box">
               <div className="pricing-header">
-                <div className="night">${listing.price} / night<span> <StarOutlineOutlinedIcon className="host-icons"/> . 7 reviews</span></div>
+                <div className="night">
+                  ${listing.price} / night
+                  <span>
+                    {" "}
+                    <StarOutlineOutlinedIcon className="host-icons" /> . 7
+                    reviews
+                  </span>
+                </div>
                 <p>
                   7 nights: <strong>${(listing.price || 0) * 7}</strong>
                 </p>
@@ -354,11 +362,13 @@ const Listing = () => {
                 <div className="checkin-checkout">
                   <div className="checkin">
                     <label>Check-In</label>
+
                     <input
                       type="date"
                       className="date-input"
                       placeholder="Add date"
-                      onChange={(e) => setCheckInDate(listing.checkin)}
+                      value={checkInDate} // This should reference your state value directly
+                      onChange={(e) => setCheckInDate(e.target.value)}
                     />
                   </div>
                   <div className="checkout">
@@ -367,7 +377,8 @@ const Listing = () => {
                       type="date"
                       className="date-input"
                       placeholder="Add date"
-                      onChange={(e) => setCheckOutDate(listing.checkout)}
+                      value={checkOutDate} // This should reference your state value directly
+                      onChange={(e) => setCheckOutDate(e.target.value)}
                     />
                   </div>
                 </div>
@@ -381,7 +392,7 @@ const Listing = () => {
                     >
                       -
                     </button>
-                    <span className="guest-count">{listing.guests}</span>
+                    <span className="guest-count">{guests}</span>
                     <button
                       className="guest-button"
                       onClick={() => handleGuestChange("increment")}
@@ -402,19 +413,22 @@ const Listing = () => {
                 <li>
                   Weekly discount:{" "}
                   <span className="negative-amount">
-                    -${listing.fees?.weeklyDiscount || 0}
+                    -${listing.weeklyDiscount || 0}
                   </span>
                 </li>
-                <li>Cleaning fee: ${listing.fees?.cleaningFee || 0}</li>
-                <li>Service fee: ${listing.fees?.serviceFee || 0}</li>
                 <li>
-                  Occupancy taxes and fees: ${listing.fees?.occupancyTaxes || 0}
+                  Cleaning fee: <span>${listing.cleaningFee || 0}</span>
+                </li>
+                <li>
+                  Service fee: <span>${listing.serviceFee || 0}</span>
+                </li>
+                <li>
+                  Occupancy taxes and fees:{" "}
+                  <span>${listing.occupancyTaxesFees || 0}</span>
                 </li>
               </ul>
               <div className="total-amount">
-                <p>
-                  Total: <strong>${(listing.price * 7).toFixed(2)}</strong>
-                </p>
+                Total: <span> ${(listing.price * 7).toFixed(2)}</span>
               </div>
               <hr />
               <div className="report-listing">
@@ -473,7 +487,7 @@ const Listing = () => {
                     src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr0QVKrjf7oMxLmxN2V23JHmtT6tP9lisUAw&s"
                     alt="Merged "
                   />
-                  <div>
+                  <div className="review-name-date">
                     <span>Rose</span>
                     <span>December 2021</span>
                   </div>
@@ -587,33 +601,41 @@ const Listing = () => {
               </div>
             </div>
           </div>
+          <div className="review-btn">
           <Button variant="outlined">Show all 12 reviews</Button>
+          </div>
         </section>
         <hr />
 
-        <section>
+        <section className="profile-text">
           <div className="hosted-by">
             <div>
               <img
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr0QVKrjf7oMxLmxN2V23JHmtT6tP9lisUAw&s"
                 alt="user profile"
               />
-              <p>Hosted by</p>
-              <h3>Jane Doe</h3>
+              <p>Hosted by <strong>Jane Doe</strong></p>
+              
             </div>
             <div className="hosted-by-text">
-              <p><StarOutlineOutlinedIcon className="host-icons"/>12 reviews</p>
-              <p><GppGoodOutlinedIcon className="host-icons"/>Identity verified</p>
-              <p><MilitaryTechOutlinedIcon className="host-icons"/>Superhost</p>
+              <p>
+                <StarOutlineOutlinedIcon className="host-icons" />
+                12 reviews
+              </p>
+              <p>
+                <GppGoodOutlinedIcon className="host-icons" />
+                Identity verified
+              </p>
+              <p>
+                <MilitaryTechOutlinedIcon className="host-icons" />
+                Superhost
+              </p>
             </div>
             <div className="hosted-by-info">
-            <span className="hosted-by-info-name">Jane Doe</span> <br/>
+              <span className="hosted-by-info-name">Jane Doe</span> <br />
               <p>
-               
-                
-                Superhost for more than 10
-                years. She's experienced with Airbnb and has helped many people
-                save money on their trips.
+                Superhost for more than 10 years. She's experienced with Airbnb
+                and has helped many people save money on their trips.
               </p>
               <p>Response rate: 100%</p>
               <p>Response time: within an hour</p>
@@ -623,8 +645,10 @@ const Listing = () => {
                 </Button>
               </div>
               <div className="host-info">
-              <LocalPoliceOutlinedIcon/> To protect your payment, <br/>never transfer money or communicate
-                <br/>outside of the Airbnb website or app.
+                <LocalPoliceOutlinedIcon /> To protect your payment, <br />
+                never transfer money or communicate
+                <br />
+                outside of the Airbnb website or app.
               </div>
             </div>
           </div>

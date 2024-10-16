@@ -15,25 +15,41 @@ const createReservation = async (req, res) => {
   }
 }
 
-
-const updateReservation = async (req, res) => {
-  const { id } = req.params; // Get reservation ID from request parameters
-  const reservationData = req.body; // Get updated data from request body
+const getReservationByHost = async (req, res) => {
+  const { hostId } = req.params; // Get host ID from request parameters
 
   try {
-    const updatedReservation = await Reservation.findByIdAndUpdate(id, reservationData, { new: true, runValidators: true }); // Update reservation
-    if (!updatedReservation) {
-      return res.status(404).json({ message: 'Reservation not found' });
-    }
-    res.status(200).json({
-      message: 'Reservation updated successfully!',
-      reservation: updatedReservation
+    // Find reservations by filtering accommodations hosted by the specified host
+    const reservations = await Reservation.find().populate({
+      path: 'accommodation',
+      match: { host: hostId }, // Match host with the provided hostId
     });
+
+    res.status(200).json(reservations);
   } catch (error) {
-    console.error('Error updating reservation:', error);
-    res.status(500).json({ message: 'Error updating reservation', error: error.message });
+    console.error('Error fetching reservations:', error);
+    res.status(500).json({ message: 'Error fetching reservations', error: error.message });
   }
 };
+
+const getReservationByUser = async (req, res) => {
+  const { userId } = req.params; // Get user ID from request parameters
+
+  try {
+    // Find reservations for the specific user
+    const reservations = await Reservation.find({ user: userId }).populate('accommodation'); // Populate accommodation details
+
+    if (!reservations) {
+      return res.status(404).json({ message: 'No reservations found for this user' });
+    }
+
+    res.status(200).json(reservations);
+  } catch (error) {
+    console.error('Error fetching reservations:', error);
+    res.status(500).json({ message: 'Error fetching reservations', error: error.message });
+  }
+};
+
 
 
 const deleteReservation = async (req, res) => {
@@ -49,8 +65,6 @@ const deleteReservation = async (req, res) => {
     console.error('Error deleting reservation:', error);
     res.status(500).json({ message: 'Error deleting reservation', error: error.message });
   }
-}
+};
 
-
-
-module.exports = { createReservation, updateReservation, deleteReservation };
+module.exports = { createReservation, getReservationByHost, getReservationByUser, deleteReservation };

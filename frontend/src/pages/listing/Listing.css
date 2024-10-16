@@ -1,12 +1,10 @@
 .listing-container {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  margin: 0 auto; 
+  justify-content: flex-start;
   padding: 0 20px; 
-  width: 100%; 
-  max-width: 1200px; 
-  box-sizing: border-box; 
+  margin: auto 0;
+  max-width: 100%; 
   background-color: #fff;
 }
 
@@ -37,8 +35,9 @@ h1{
 .share-save {
   display: flex;
   align-items: flex-end;
-  padding: 0px 20px 0px 0px;
-  margin: 0px 80px 10px 75px;
+  padding: 0px 10px 0px 90px;
+  margin-right: 125px;
+  margin-bottom: 10px;
   gap: 5px;
   text-decoration: underline;
 }
@@ -46,9 +45,9 @@ h1{
 .image-grid {
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
-  grid-template-rows: repeat(2, 350px);
+  grid-template-rows: repeat(2, 280px);
   grid-gap: 10px;
-  width: 100%;
+  max-width: 100%;
   padding: 0 80px 0 95px;
   border-radius: 20px;  
 }
@@ -249,13 +248,15 @@ a {
   display: flex;
   flex-direction: column;
 }
+
 .pricing-box {
   padding: 20px;
   border: 1px solid #e7e7e7;
   border-radius: 12px;
-  max-width: 65%;
+  max-width: 85%;
   max-height: fit-content;
-  margin-left: 20px;
+  margin-left: 40px;
+  margin-right: 70px;
   box-shadow: rgba(136, 165, 191, 0.48) 6px 2px 16px 0px, rgba(255, 255, 255, 0.8) -6px -2px 16px 0px;
 }
 
@@ -496,7 +497,7 @@ h3 {
   flex-wrap: nowrap; 
   align-content: space-between;
   height: 100%;
-  padding: 15px;
+  padding: 5px 0;
   gap: 145px;
 
 }
@@ -537,6 +538,8 @@ h4{
 
 .explore-container {
   background-color: #f4f4f4;
+  max-width: 100%;
+  margin: 0 auto;
 }
 .explore-content {
   display: flex;
@@ -547,12 +550,14 @@ h4{
   height: 100%;
   padding: 5px;
   gap: 155px;
-  width: 100%;
+  margin-left: 5px;
+ 
 }
 
 .explore-content > div{
   border-radius: 5px;
   padding: 2px;
+  gap: 155px;
 }
 
 .explore-content > div > p {
@@ -560,12 +565,14 @@ h4{
   flex-direction: column;
   gap: 155px;
   width: 100%;
+  padding: 15px 45px;
 }
 
 .item1 { 
   /* flex:0 1 auto; */
   flex-grow:0;
   align-self:stretch;
+  padding: 15px;
 }
     
 .item2 { 
@@ -666,10 +673,23 @@ h4{
   font-size: 28px;
   margin-bottom: 25px;
 }
+
+.profile-text {
+  display: flex;
+  margin: 0px;
+}
+
+.hosted-by {
+  margin-top: 0px;
+}
 .hosted-by img {
   border-radius: 50%;
   width: 50px;
   height: 50px;
+}
+
+.hosted-by  p{
+  padding: 10px;
 }
 
 
@@ -734,9 +754,10 @@ h4{
     font-size: 18px;
   }
 
-  .hosted-by-info-name > span{
+  .hosted-by-info-name {
     font-size: 14px;
     color: #000;
+    font-weight: 600;
   }
 
   .host-info{
@@ -754,4 +775,16 @@ h4{
   .night {
     display: flex;
     justify-content: space-between;
+  }
+
+
+  .review-name-date {
+    display: block;
+    padding: 10px;
+  }
+
+  .review-btn button{
+    margin-top: 20px;
+    border: 2px solid #000;
+    color: #000;
   }

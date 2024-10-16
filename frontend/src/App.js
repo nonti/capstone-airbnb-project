@@ -19,7 +19,7 @@ axios.defaults.withCredentials = true;
 
 const App = () => {
   return (
-    <div className='layout'>
+    <div className='app'>
       <Header />
 
       <Routes>

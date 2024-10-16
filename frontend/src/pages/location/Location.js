@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate, useParams } from 'react-router-dom';
 import axios from 'axios';
 import "./Location.css";
+import {format} from 'date-fns';
 import { Button } from '@mui/material';
 import KeyboardArrowDownOutlinedIcon from '@mui/icons-material/KeyboardArrowDownOutlined';
 import TuneOutlinedIcon from '@mui/icons-material/TuneOutlined';
@@ -33,7 +34,16 @@ const Location = () => {
   }, []);
 
   const handleImageClick = (location) => {
-    navigate(`/locationInfo/${location._id}`, { state: { id: location._id, title: location.title, price: location.price } });
+    navigate(`/locationInfo/${location._id}`, { state: { 
+      id: location._id, 
+      title: location.title, 
+      price: location.price,
+      checkin: checkInDate,
+      checkout: checkOutDate,
+      guestCount: guestCount,
+      selectedLocation: selectedLocation
+
+     } });
   };
 
   // Format the date to a readable string

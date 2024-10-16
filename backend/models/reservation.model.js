@@ -12,102 +12,30 @@ const specificRatingsSchema = new mongoose.Schema({
 
 // Define the reservation schema
 const reservationSchema = new mongoose.Schema({
-  images: {
-    type: [String], // Array of image URLs
-    required: true
-  },
-  type: {
-    type: String, // Accommodation type (e.g., apartment, house)
-    required: true
-  },
-  location: {
-    type: String, // Location of the accommodation
-    required: true
-  },
-  guests: {
-    type: Number, // Number of guests
-    required: true
-  },
-  bedrooms: {
-    type: Number, // Number of bedrooms
-    required: true
-  },
-  bathrooms: {
-    type: Number, // Number of bathrooms
-    required: true
-  },
-  beds: {
-    type: Number, // Number of beds
-    required: true
-  },
-  amenities: {
-    type: [String], // List of amenities
-    required: true
-  },
-  ratings: {
-    type: Number, // Overall rating (if applicable)
-    default: 0
-  },
-  reviews: {
-    type: Number, // Total number of reviews
-    required: true
-  },
-  price: {
-    type: Number, // Total price for the reservation
-    required: true
-  },
-  title: {
-    type: String, // Title of the accommodation
-    required: true
-  },
-  host: {
-    type: mongoose.Schema.Types.ObjectId, // Reference to the User model for the host
-    ref: 'User',
-    required: true
-  },
   accommodation: {
-    type: mongoose.Schema.Types.ObjectId, // Reference to the Accommodation model
-    ref: 'Accommodation',
-    required: true
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Accommodation', // Reference to the Accommodation model
+    required: true,
   },
-  cleaningFee: {
-    type: Number, // Cleaning fee for the reservation
-    required: true
+  user: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User', // Reference to the User making the reservation
+    required: true,
   },
-  serviceFee: {
-    type: Number, // Service fee for the reservation
-    required: true
+  checkInDate: {
+    type: Date,
+    required: true,
   },
-  occupancyTaxes: {
-    type: Number, // Taxes related to occupancy
-    required: true
+  checkOutDate: {
+    type: Date,
+    required: true,
   },
-  enhancedCleaning: {
-    type: Boolean, // Indicates if enhanced cleaning is offered
-    default: false
-  },
-  selfCheckin: {
-    type: Boolean, // Indicates if self-check-in is available
-    default: false
-  },
-  description: {
-    type: String, // Description of the accommodation
-    required: true
-  },
-  specificRatings: specificRatingsSchema, 
   createdAt: {
     type: Date,
-    default: Date.now 
-  },
-  checkIn: {
-    type: Date,
-    required: true 
-  },
-  checkOut: {
-    type: Date,
-    required: true 
+    default: Date.now,
   },
 });
 
 const Reservation = mongoose.model('Reservation', reservationSchema);
+
 module.exports = Reservation;

@@ -25,7 +25,8 @@
 }
 
 .logo {
-  width: 150px;
+  width: 140px;
+  margin-left: 50px;
 }
 
 .header-text  {
@@ -39,8 +40,8 @@
 
 .header-text p {
   color: #fff !important;
-
 }
+
 .search-bar {
   display: flex;
   align-items: center;
@@ -49,14 +50,21 @@
   border-radius: 5px;
 }
 
-.become-a-host-link{
+.host-black {
+  color: #000;
+}
+
+.host-white {
+  color: #fff;
+}
+
+.become-a-host-link {
+  /* display: inline-block; */
   text-decoration: none;
   color: #000;
 }
 
-.become-a-host-link .scrolled{
-  color: #fff;
-} 
+
 
 .search-icon-div {
   margin-left: 10px;
@@ -117,6 +125,7 @@
   border: none;
   outline: none;
 }
+
 .search-bar-input {
   display: flex;
   align-items: center;
@@ -147,33 +156,27 @@
  
 }
 
-
 .profile-container {
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 0.25rem;
+  gap: 25px;
+  margin-right: 10px; 
 }
 
 .become-a-host {
-  padding: 1rem;
   font-weight: 600;
-  border-radius: 2rem;
   cursor: pointer;
+  gap: 50px;
   font-size: 18px;
+  color: #fff;
 }
 
-.host-white {
-  color: #fff; 
-}
 
-.host-black {
-  color: #000; 
-}
 
 .lang-icon {
   color: #fff;
-}
+} 
 
 .profile-container{
   color: #fff;
@@ -183,7 +186,7 @@
   display: flex;
   justify-content: flex-start;
   align-items: center;
-  gap: 15px;
+  gap: 35px;
   border: 1px solid grey;
   border-radius: 3rem;
   padding: 0.35rem 0.35rem;
@@ -400,7 +403,7 @@ button {
 .date-picker {
   border: none;
   outline: none;
-  width: 70%;
+  width: 100%;
 
 }
 

@@ -44,11 +44,13 @@ const LocationInfo = () => {
     if (isLoggedIn) {
       // If logged in, navigate to the listings page
       navigate(`/listing/${location._id}`, { state: {
-         id: location._id, title: location.title, 
-         price: location.price, images: location.images, 
+         id: location._id, 
+         title: location.title, 
+         price: location.price,
+         images: location.images, 
          description: location.description ,
          reviews: location.reviews, 
-         rating: location.rating, 
+         ratings: location.rating, 
          cleaningFee: location.cleaningFee,
          serviceFee: location.serviceFee,
          location: location.location,
@@ -59,7 +61,8 @@ const LocationInfo = () => {
          beds: location.beds,
          checkin: location.checkin,
          checkout: location.checkout,
-         occupancyTaxes: location.occupancyTaxes,
+         weeklyDiscount: location.weeklyDiscount,
+         occupancyTaxesFees: location.occupancyTaxesFees,
          listingName: location.listingName,
 
         } });
@@ -72,7 +75,7 @@ const LocationInfo = () => {
   return (
     <div className="location-details-page">
       <h1>{location.title}</h1>
-      <h2>{location.type} in {location.loc}</h2>
+      <h2>{location.type} {location.loc}</h2>
       <div className="details-container">
         {location.images && location.images.length > 0 ? (
           <img src={`http://localhost:5000/${location.images[0]}`} alt={location.title} className="main-image" />
@@ -86,16 +89,17 @@ const LocationInfo = () => {
           <p>Bedrooms: {location.bedrooms}</p>
           <p>Bathrooms: {location.bathrooms}</p>
           <p>Amenities: {location.amenities.join(', ')}</p>
-          <p>Rating: {location.rating} ({location.reviews} reviews)</p>
+          <p>Rating: {location.ratings} ({location.reviews} reviews)</p>
         </div>
       </div>
       <div className="cost-calculator">
         <h3>Cost Breakdown</h3>
         <p>Price per night: ${location.price}</p>
+        <p>Weekly discount -${location.weeklyDiscount}</p>
         <p>Cleaning Fee: ${location.cleaningFee}</p>
         <p>Service Fee: ${location.serviceFee}</p>
-        <p>Occupancy Taxes: ${location.occupancyTaxes}</p>
-        <h4>Total: ${(location.price + location.cleaningFee + location.serviceFee + location.occupancyTaxes).toFixed(2)}</h4>
+        <p>Occupancy Taxes: ${location.occupancyTaxesFees}</p>
+        <h4>Total: ${(location.price - location.weeklyDiscount + location.cleaningFee + location.serviceFee + location.occupancyTaxesFees).toFixed(2)}</h4>
         <button className="reserve-button" onClick={() => handleReserveClick(location)}>Reserve Now</button> {/* Updated this line */}
       </div>
     </div>

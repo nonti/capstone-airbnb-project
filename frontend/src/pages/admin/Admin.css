@@ -42,13 +42,6 @@ hr {
   transition: background-color 0.3s; 
 }
 
-.btn-list {
-  border-radius: 30px;
-  text-transform: inherit;
-  margin: 5px;
-  border: 1px solid #ccc;
-  color: #ccc;
-}
 
 
 .button-container > button{

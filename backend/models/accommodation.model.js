@@ -19,6 +19,8 @@ const accommodationSchema = new mongoose.Schema({
   serviceFee: { type: Number, default: 0 },
   occupancyTaxesFees: { type: Number, default: 0 },
   total: { type: Number, default: 0 },
+  ratings: { type: Number, default: 0 },
+  reviews: { type: Number, default: 0 },
   host: { type: mongoose.Schema.Types.ObjectId, ref: "User", required: true },
   
   createdAt: { type: Date, default: Date.now },
