@@ -56,22 +56,19 @@ const Footer = () => {
         <div className="footer-center"></div>
         <div className="footer-right">
           <div className="footer-right-left">
-            <p>
-              <LanguageIcon />
-            </p>
+             <span><LanguageIcon /></span> 
             <select className="footer-select" style={{textDecoration: 'underline'}}>
-              <KeyboardArrowDownIcon />
+              {/* <KeyboardArrowDownIcon /> */}
               <option value="English">English(EN)</option>
               <option value="English">English(IN)</option>
               <option value="English">English(US)</option>
               <option value="English">English(UK)</option>
             </select>
             <select className="footer-select" style={{textDecoration: 'underline'}}>
-              <KeyboardArrowDownIcon />
-              <option value="zar">$ USD</option>
-              <option value="usd"> R ZAR</option>
-              <option value="aud">$ AUD</option>
-              <option value="brl">RBL BRL</option>
+              {/* <KeyboardArrowDownIcon /> */}
+              <option value="zar">$USD</option>
+              <option value="usd"> RZAR</option>
+              <option value="aud">$AUD</option>
             </select>
           </div>
           <div className="footer-right-center"></div>

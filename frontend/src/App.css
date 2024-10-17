@@ -1,0 +1,16 @@
+
+
+.home-background {
+  background: #000;
+  background-size: cover;
+  height: 100vh; 
+} 
+
+/* .white-background {
+  background-color: white;
+  height: 100vh; 
+} */
+
+body{
+  backgound-color: #000;
+}

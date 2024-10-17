@@ -18,7 +18,7 @@
     flex: 1;
 }
 
-.item-footer b
+.item-footer> b
 {
     font-family: 'airbnb-light';
     font-weight: 900;
@@ -26,11 +26,12 @@
     color: #3E2222;
 }
 
-.item-footer p
+.item-footer > p
 {
     font-family: 'airbnb-light';
     font-size: 15px;
     color: #222222;
+    padding: 0.5em 0.2em;
     cursor: pointer;
 }
 
@@ -81,7 +82,10 @@
     display: flex;
     justify-content: space-evenly;
     flex: 1;
+    padding-top: 0px !important;
 }
+
+
 
 .footer-right-center
 {
@@ -99,6 +103,11 @@
   border: none;
   outline: none;
   background-color: inherit;
+  margin-top: 0;
+}
+
+.footer-options {
+    width: 150px !important;
 }
 
 .footer-center

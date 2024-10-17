@@ -56,6 +56,7 @@ const HeaderBottom = () => {
   };
 
   return (
+    <div className='header-content'>
     <div className="header-bottom">
       <div className="header-search">
         <div className="search-where">
@@ -138,6 +139,7 @@ const HeaderBottom = () => {
           <SearchIcon className="search-icon" />
         </button>
       </div>
+    </div>
     </div>
   );
 };

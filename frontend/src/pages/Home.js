@@ -6,9 +6,11 @@ import Host from '../components/host/Host';
 import Inspiration from '../components/inspiration/Inspiration';
 import Footer from '../components/footer/Footer';
 import Banner from '../components/banner/Banner';
+import HeaderBottom from '../components/header/HeaderBottom';
 const Home = () => {
   return (
     <div className='home-background'>
+      <HeaderBottom/>
       <Banner />
       <CardTiles/>
       <Experiences/>

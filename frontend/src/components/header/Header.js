@@ -33,14 +33,16 @@ const Header = () => {
   const isListingPage = listingPath.includes(location.pathname);
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("host"));
+    const storedUser = JSON.parse(localStorage.getItem("host") || localStorage.getItem("user"));
     console.log("Retrieved User from Local Storage:", storedUser);
     if (storedUser) {
       setRole(storedUser.role);
-      setUsername(storedUser.username); // Assuming you create a state for the username
+      setUsername(storedUser.username);
+      setUser(storedUser);
     } else {
       setRole(null);
-      setUsername(null); // Clear username if no user found
+      setUsername(null);
+      setUser(null);
     }
   }, []);
 
@@ -58,9 +60,10 @@ const Header = () => {
 
   const handleSignOut = () => {
     localStorage.removeItem("user");
-    localStorage.removeItem("token");
+    localStorage.removeItem("host");
     setRole(null);
     setUsername(null);
+    setUser(null);
     navigate("/signin");
   };
 
@@ -114,35 +117,73 @@ const Header = () => {
                 <div className="profile-container">
                   {user ? (
                     <>
-                      <div
-                        className={`become-a-host ${
-                          isHomePage ? "host-white" : "host-black"
-                        }`}
-                      >
-                        {user.username} {/* Show username */}
-                      </div>
+                      {role === "host" ? (
+                        // Display host's name where "Become a host" usually is
+                        <div
+                          className={`become-a-host ${
+                            isHomePage ? "host-white" : "host-black"
+                          }`}
+                        >
+                          {username}
+                        </div>
+                      ) : (
+                        // Display "Become a host" for regular users
+                        <Link to="/signin" className="become-a-host">
+  <div className={`become-a-host ${isScrolled ? "host-black" : "host-white"}`}>
+    Become a host
+  </div>
+</Link>
+
+                      )}
+
                       <div className="profile-div">
                         <div className="dropdown">
                           <MenuRoundedIcon className="dropbtn" />
                           <div className="dropdown-content">
-                            <span
-                              onClick={() => navigate("/reservations")}
-                              className="link"
-                            >
-                              View Reservations
-                            </span>
-                            <span
-                              onClick={() => navigate("/listings")}
-                              className="link"
-                            >
-                              View Listings
-                            </span>
+                            {role === "host" ? (
+                              <>
+                                <span
+                                  onClick={() => navigate("/reservations")}
+                                  className="link"
+                                >
+                                  View Reservations
+                                </span>
+                                <span
+                                  onClick={() => navigate("/create-listing")}
+                                  className="link"
+                                >
+                                  Create Listing
+                                </span>
+                                <span
+                                  onClick={() => navigate("/listings")}
+                                  className="link"
+                                >
+                                  View Listings
+                                </span>
+                              </>
+                            ) : (
+                              <>
+                                <span
+                                  onClick={() => navigate("/reservations")}
+                                  className="link"
+                                >
+                                  View Reservations
+                                </span>
+                              </>
+                            )}
                             <span onClick={handleSignOut} className="link">
                               Sign Out
                             </span>
                           </div>
                           <AccountCircleIcon className="profile-icon" />
                         </div>
+
+                        {/* If the user is logged in and is NOT a host, show the name near the AccountCircleIcon */}
+                        {role === "user" && (
+                          <div className="user-name">
+                            {username}
+                          </div>
+                        )}
                       </div>
                     </>
                   ) : (
@@ -284,16 +325,8 @@ const Header = () => {
           </>
         )}
       </div>
+{/* Show HeaderBottom only on non-location pages */}
 
-      {/* Show HeaderBottom only on non-location pages */}
-      {!authPaths.includes(location.pathname) &&
-        !isLocationPage &&
-        isHomePage &&
-        !isListingPage &&
-        !isAdminPage &&
-        !isCreateListingPage &&
-        !isListingsPage &&
-        !isReservationsPage && <HeaderBottom />}
     </>
   );
 };
