@@ -46,10 +46,10 @@ h1{
   display: grid;
   grid-template-columns: 2fr 1fr 1fr;
   grid-template-rows: repeat(2, 280px);
-  grid-gap: 10px;
+  grid-gap: 5px;
   max-width: 100%;
-  padding: 0 80px 0 95px;
-  border-radius: 20px;  
+  padding: 0 70px 0 65px;
+  border-radius: 10px;  
 }
 
 .item {
@@ -66,6 +66,7 @@ h1{
 
 .item1 {
   grid-row: 1 / 3;
+  width: 
 }
 
 .item2 {
@@ -85,8 +86,7 @@ hr {
   border-width:0;
   background-color: #ccc;
   color:gray;
-  margin-left: auto;
-  margin-right: auto;
+  margin-left: auto 0;
   border-style: inset;
 }
 
@@ -388,7 +388,7 @@ a {
 }
 
 .report-link {
-  color: #007A83; 
+  color: #808080; 
   text-decoration: underline;
   font-size: 14px;
   cursor: pointer;
@@ -538,34 +538,39 @@ h4{
 
 .explore-container {
   background-color: #f4f4f4;
-  max-width: 100%;
-  margin: 0 auto;
+  max-width: 80%;
+  margin: 35px auto;
 }
+
 .explore-content {
   display: flex;
   align-items: stretch; 
   flex-direction: row; 
-  flex-wrap: entp; 
+  flex-wrap: wrap; 
   align-content: space-between;
   height: 100%;
-  padding: 5px;
+  padding: 15px;
   gap: 155px;
-  margin-left: 5px;
+  margin-left: -65px;
  
 }
 
+.explore-container > h2{
+  margin-left: -55px;
+  
+}
 .explore-content > div{
   border-radius: 5px;
-  padding: 2px;
-  gap: 155px;
+  padding-right: -22px;
+  gap: 125px;
 }
 
 .explore-content > div > p {
   display: flex;
   flex-direction: column;
-  gap: 155px;
+  gap: 125px;
   width: 100%;
-  padding: 15px 45px;
+  padding: 15px 0px;
 }
 
 .item1 { 
@@ -580,16 +585,21 @@ h4{
   align-self:stretch;
 }
 
-h4{
-  font-size: 16px;
-  margin-top: 10px;
-  margin-bottom: 0px;
+.item3 {
+  /* flex:0 1 auto; */
+  align-self:stretch;
+}
+
+.item4 {
+  /* flex:0 1 auto; */
+  align-self: stretch;
 }
 
 .airbnb {
   display: flex;
   gap: 1px;
 }
+
 .airbnb > span{
   display: flex;
   align-items: center; 
@@ -674,14 +684,20 @@ h4{
   margin-bottom: 25px;
 }
 
+.rules {
+  font-weight: 600;
+}
 .profile-text {
   display: flex;
-  margin: 0px;
+  margin: 40px 0;
+
 }
 
-.hosted-by {
-  margin-top: 0px;
+.hosted-by > div{
+  margin-top: -85px;
+  display: flex;
 }
+
 .hosted-by img {
   border-radius: 50%;
   width: 50px;
@@ -690,6 +706,7 @@ h4{
 
 .hosted-by  p{
   padding: 10px;
+  color: #808080;
 }
 
 
@@ -745,17 +762,24 @@ h4{
   .hosted-by-text {
     display: inline-flex;
     flex-wrap: wrap;
-    margin-top: 10px;
+    margin-top: -15px;
     gap: 20px;
   }
 
-  .hosted-by-info {
-    color: #ccc;
+  .hosted-by-info > p{
+    color: #808080;
     font-size: 18px;
+    padding: 10px;
+    margin-top: 10px;
+
+  }
+
+  .hosted-by-info-name > div {
+    margin-top: 50px;
   }
 
   .hosted-by-info-name {
-    font-size: 14px;
+    font-size: 18px;
     color: #000;
     font-weight: 600;
   }

@@ -6,9 +6,7 @@ import { Link, useNavigate, useLocation } from "react-router-dom";
 import LanguageIcon from "@mui/icons-material/Language";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
 import MenuRoundedIcon from "@mui/icons-material/MenuRounded";
-import HeaderBottom from "./HeaderBottom";
 import SearchRoundedIcon from "@mui/icons-material/SearchRounded";
-
 const Header = () => {
   const navigate = useNavigate();
   const location = useLocation();
@@ -121,19 +119,18 @@ const Header = () => {
                         // Display host's name where "Become a host" usually is
                         <div
                           className={`become-a-host ${
-                            isHomePage ? "host-white" : "host-black"
+                            isHomePage ? "host-black" : "host-white"
                           }`}
                         >
-                          {username}
+                          {role.username}
                         </div>
                       ) : (
                         // Display "Become a host" for regular users
-                        <Link to="/signin" className="become-a-host">
-  <div className={`become-a-host ${isScrolled ? "host-black" : "host-white"}`}>
-    Become a host
-  </div>
-</Link>
-
+                        <Link to="/signin" className={`become-a-host ${isScrolled ? "host-black" : "host-white"}`}>
+                          <div className={`become-a-host ${isScrolled ? "host-white" : "host-black"}`}>
+                            Become a host
+                          </div>
+                        </Link>
                       )}
 
                       <div className="profile-div">
@@ -188,7 +185,7 @@ const Header = () => {
                     </>
                   ) : (
                     <>
-                      <Link to="/signin" className="become-a-host">
+                      <Link to="/signin" className={`become-a-host ${isScrolled ? "host-black" : "host-white"}`}>
                         <div
                           className={`become-a-host ${
                             isHomePage ? "host-black" : "host-white"
@@ -268,7 +265,7 @@ const Header = () => {
                 )}
 
                 <div className="profile-container">
-                  <Link to="/signin" className="become-a-host-link">
+                  <Link to="/signin" className={`become-a-host ${isScrolled ? "host-black" : "host-white"}`}>
                     <div
                       className={`become-a-host ${
                         isHomePage ? "host-white" : "host-black"
@@ -325,7 +322,6 @@ const Header = () => {
           </>
         )}
       </div>
-{/* Show HeaderBottom only on non-location pages */}
 
     </>
   );

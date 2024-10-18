@@ -46,6 +46,7 @@ const Signin = () => {
           setSignIn({
             user: signedIn.user,
             token: signedIn.token,
+            role: signedIn.role
           })
         );
   

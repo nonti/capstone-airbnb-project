@@ -20,14 +20,20 @@ const Listings = () => {
   }, []);
 
   return (
+    <>
+    <hr />
+    <p className="hotel-list">My Hotel List</p>
+    <hr />
     <div className="img-container">
     {locations.length > 0 && (
       locations.map((location, index) => (
+        <>
         <div className={`img-content ${index === 2 ? 'single-column' : ''}`} key={location._id}>
           <img
             src={`http://localhost:5000/${location.images[0]}`}
             alt="img"
           />
+             
           <div className="img-content-info">
             <p><strong>{location.title}</strong></p>
             <hr />
@@ -35,16 +41,26 @@ const Listings = () => {
             <p>Amenities: {location.amenities.map((amenity) => JSON.parse(amenity)).flat().join(", ")}</p>
             <hr />
             <p>
-              Rating: {location.ratings} ⭐ ({location.reviews} reviews) <strong>${location.price}</strong> /night
+              Rating: {location.ratings} ⭐ ({location.reviews} reviews) 
             </p>
+
+            <p><strong>${location.price}</strong> /night</p>
           </div>
-          <button className="update">Update</button>
-          <button className="delete">Delete</button>
-        </div>
+          
+             </div>
+             <button className="update">Update</button>
+             <button className="delete">Delete</button>
+             <hr/>
+
+    </>
+
       ))
     )}
+
+    
   </div>
-  
+
+  </>
   );
 };
 

@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from "react";
 import StarIcon from "@mui/icons-material/Star";
 import axios from "axios";
-import "@umakantp/react-date-range/dist/styles.css"; // main style file
-import "@umakantp/react-date-range/dist/theme/default.css";
 import "./Listing.css";
+import "react-datepicker/dist/react-datepicker.css";
 import { useLocation, useParams, useNavigate } from "react-router-dom";
 import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import YardOutlinedIcon from "@mui/icons-material/YardOutlined";
@@ -38,15 +37,8 @@ import LocalPoliceOutlinedIcon from "@mui/icons-material/LocalPoliceOutlined";
 import GppGoodOutlinedIcon from "@mui/icons-material/GppGoodOutlined";
 import StarOutlineOutlinedIcon from "@mui/icons-material/StarOutlineOutlined";
 import MilitaryTechOutlinedIcon from "@mui/icons-material/MilitaryTechOutlined";
-import dayjs from 'dayjs';
-import { DemoContainer, DemoItem } from '@mui/x-date-pickers/internals/demo';
-import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
-import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
-import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
-import { MobileDateRangePicker } from '@mui/x-date-pickers-pro/MobileDateRangePicker';
-import { DesktopDateRangePicker } from '@mui/x-date-pickers-pro/DesktopDateRangePicker';
-import { StaticDateRangePicker } from '@mui/x-date-pickers-pro/StaticDateRangePicker';
-import { pickersLayoutClasses } from '@mui/x-date-pickers/PickersLayout';
+import Footer from "../../components/footer/Footer";
+import DatePicker from "react-datepicker";
 
 const Listing = () => {
   const [guests, setGuests] = useState(1);
@@ -57,12 +49,19 @@ const Listing = () => {
   const [checkOutDate, setCheckOutDate] = useState('');
   const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
-  const [selectionRange, setSelectionRange] = useState({
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [stateDate, setStateDate] = useState({
     startDate: new Date(),
     endDate: new Date(),
-    key: "selection",
   });
+
+  
   const [loading, setLoading] = useState(false);
+
+  useEffect(() => {
+    const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
+    setIsLoggedIn(loggedInStatus);
+  }, []);
 
   useEffect(() => {
     // If listing is not available from state, fetch it from the API
@@ -85,11 +84,7 @@ const Listing = () => {
     return <p>Loading listing details...</p>;
   } // Re-fetch when listingId changes
 
-  const handleSelect = (ranges) => {
-    setSelectionRange(ranges.selection);
-    setCheckInDate(ranges.selection.startDate.toISOString().split("T")[0]);
-    setCheckOutDate(ranges.selection.endDate.toISOString().split("T")[0]);
-  };
+
   const handleGuestChange = (action) => {
     if (action === "increment") {
       setGuests((prevGuests) => prevGuests + 1);
@@ -98,69 +93,50 @@ const Listing = () => {
     }
   };
 
+  
+
   const handleReservation = async () => {
     if (!checkInDate || !checkOutDate || guests < 1) {
-      const message =
-        "Please fill in all fields and ensure at least one guest is selected.";
+      const message = "Please fill in all fields and ensure at least one guest is selected.";
       setErrorMessage(message);
       toast.error(message);
       return;
     }
-
-    console.log({
+  
+    const userInfo = JSON.parse(localStorage.getItem('user'));
+    const username = userInfo?.username;
+  
+    
+    const reservationDetails = {
+      accommodation: listing?._id, // Ensure this is the correct reference to your accommodation
+      user: username,
       checkInDate,
       checkOutDate,
-      guests,
-      listing,
-    });
-    const reservationDetails = {
-      images: listing.images,
-      type: listing.type,
-      location: listing.location,
-      guests: guests,
-      bedrooms: listing.bedrooms,
-      bathrooms: listing.bathrooms,
-      beds: listing.beds,
-      amenities: listing.amenities,
-      price: listing.price,
-      title: listing.title,
-      host_id: listing.host?._id,
-      host: listing.host.username,
-      reviews: listing.reviews,
-      ratings: listing.rating,
-      accommodation: listing.accommodation._id, // Reference to accommodation id
-      cleaningFee: listing.fees?.cleaningFee || 0,
-      serviceFee: listing.fees?.serviceFee || 0,
-      weeklyDiscount: listing.fees?.weeklyDiscount || 0,
-      occupancyTaxesFee: listing.fees?.occupancyTaxesFee || 0,
-      description: listing.description,
-      checkin: listing.checkInDate,
-      checkout: listing.checkOutDate,
     };
-
+  
+    console.log("Reservation Details:", reservationDetails); // Debugging log
+  
     try {
-      const response = await axios.post(
-        "http://localhost:5000/api/reservations",
-        reservationDetails
-      );
+      const response = await axios.post("http://localhost:5000/api/reservations", reservationDetails);
       setListing(response.data);
-      console.log(response.data);
-      setErrorMessage(""); // Reset error message
+      setErrorMessage("");  // Reset error message
       setLoading(true);
       toast.success("Reservation made successfully!");
       navigate("/reservations", {
         state: {
-          listingName: listing.title,
-          host: listing.host.username,
-          checkin: listing.checkin,
-          checkout: listing.checkout,
+          accommodation: listing._id,
+          user: listing.username,
+          checkInDate: checkInDate,
+          checkOutDate: checkOutDate,
         },
       });
     } catch (error) {
       toast.error("Error making reservation. Please try again.");
+      console.error("Reservation error:", error.response?.data || error.message);
     }
   };
-
+  
+  
   if (!listing) return <div>Loading...</div>;
 
   return (
@@ -337,11 +313,12 @@ const Listing = () => {
             </section>
             <hr />
             <section>
-              <h1>7 nights in New York</h1>
-              <p>Start Date: {selectionRange.startDate.toDateString()}</p>
-              <p>End Date: {selectionRange.endDate.toDateString()}</p>
-              
-            </section>
+      <h1>7 nights in New York</h1>
+      <p>Start Date: {state.startDate}</p>
+      <p>End Date: {state.endDate}</p>
+
+      
+    </section>
           </div>
           <div class="item2">
             <div className="pricing-box">
@@ -439,7 +416,6 @@ const Listing = () => {
               </div>
             </div>
           </div>
-          ...
         </div>
         <hr />
         <section className="show-btn">
@@ -604,8 +580,10 @@ const Listing = () => {
           <div className="review-btn">
           <Button variant="outlined">Show all 12 reviews</Button>
           </div>
+
         </section>
         <hr />
+
 
         <section className="profile-text">
           <div className="hosted-by">
@@ -614,8 +592,8 @@ const Listing = () => {
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQr0QVKrjf7oMxLmxN2V23JHmtT6tP9lisUAw&s"
                 alt="user profile"
               />
-              <p>Hosted by <strong>Jane Doe</strong></p>
-              
+              <p>Hosted by <strong>Zoe Barns</strong></p>
+              </div>
             </div>
             <div className="hosted-by-text">
               <p>
@@ -632,7 +610,7 @@ const Listing = () => {
               </p>
             </div>
             <div className="hosted-by-info">
-              <span className="hosted-by-info-name">Jane Doe</span> <br />
+              <div className="hosted-by-info-name">Zoe Barns is a host</div> <br />
               <p>
                 Superhost for more than 10 years. She's experienced with Airbnb
                 and has helped many people save money on their trips.
@@ -651,14 +629,15 @@ const Listing = () => {
                 outside of the Airbnb website or app.
               </div>
             </div>
-          </div>
+
         </section>
         <hr />
+
         <section>
           <h2 className="things-to-know">Things to know</h2>
           <div class="things-container">
             <div class="item1">
-              <p>House rules</p>
+              <p className="rules">House rules</p>
               <div className="rules-span">
                 <AccessTimeIcon />
                 <span>Check-in After 4:PM</span>
@@ -690,7 +669,7 @@ const Listing = () => {
               </div>
             </div>
             <div class="item2">
-              <p>Health and safety</p>
+              <p className="rules">Health and safety</p>
               <div className="rules-span">
                 <AutoAwesomeOutlinedIcon />
                 <span>
@@ -722,15 +701,17 @@ const Listing = () => {
               <Link>Show more </Link>
             </div>
             <div class="item3">
-              <p>Cancellation policy</p>
+              <p className="rules">Cancellation policy</p>
               <div>Free canellation</div>
               <div className="rules-span">
                 <Link>Show more </Link>
               </div>
             </div>
           </div>
+
         </section>
         <hr />
+
         <section className="explore-container">
           <h2 className="things-to-know">Explore other options in France</h2>
           <div class="explore-content">
@@ -787,6 +768,8 @@ const Listing = () => {
             <span>Bordeaux</span>
           </div>
         </section>
+      <Footer />
+
       </div>
       <ToastContainer />
     </>

@@ -51,7 +51,7 @@ const Reservations = () => {
               <tbody>
                 {reservations.map((reservation) => (
                   <tr key={reservation.id}>
-                    <td>{reservation.bookedBy}</td> {/* Assuming "bookedBy" is a field */}
+                    <td>{reservation.host.username}</td> {/* Assuming "bookedBy" is a field */}
                     <td>{reservation.listingName}</td> {/* Correct this if the field name is different */}
                     <td>{reservation.checkin}</td> {/* Fix the typo */}
                     <td>{reservation.checkout}</td>
