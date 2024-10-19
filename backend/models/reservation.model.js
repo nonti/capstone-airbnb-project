@@ -12,16 +12,23 @@ const specificRatingsSchema = new mongoose.Schema({
 
 // Define the reservation schema
 const reservationSchema = new mongoose.Schema({
-  accommodation: {
+  accommodationId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'Accommodation', // Reference to the Accommodation model
-    required: true,
   },
-  user: {
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User', // Reference to the User making the reservation
+  },
+  bookedBy: {
+    type: String,
     required: true,
   },
+  property: {
+    type: String,
+    required: true, 
+  },
+ 
   checkInDate: {
     type: Date,
     required: true,

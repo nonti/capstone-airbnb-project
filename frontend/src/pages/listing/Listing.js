@@ -38,8 +38,7 @@ import GppGoodOutlinedIcon from "@mui/icons-material/GppGoodOutlined";
 import StarOutlineOutlinedIcon from "@mui/icons-material/StarOutlineOutlined";
 import MilitaryTechOutlinedIcon from "@mui/icons-material/MilitaryTechOutlined";
 import Footer from "../../components/footer/Footer";
-import DatePicker from "react-datepicker";
-
+import GridViewIcon from '@mui/icons-material/GridView';
 const Listing = () => {
   const [guests, setGuests] = useState(1);
   const { state } = useLocation();
@@ -54,9 +53,7 @@ const Listing = () => {
     startDate: new Date(),
     endDate: new Date(),
   });
-
   
-  const [loading, setLoading] = useState(false);
 
   useEffect(() => {
     const loggedInStatus = localStorage.getItem("isLoggedIn") === "true";
@@ -73,7 +70,7 @@ const Listing = () => {
           );
           setListing(response.data);
         } catch (error) {
-          console.error("Error fetching listing data:", error);
+          toast.error("Error fetching listing data:", error);
         }
       };
       fetchListing();
@@ -96,6 +93,9 @@ const Listing = () => {
   
 
   const handleReservation = async () => {
+
+    
+    // Check if required fields are filled
     if (!checkInDate || !checkOutDate || guests < 1) {
       const message = "Please fill in all fields and ensure at least one guest is selected.";
       setErrorMessage(message);
@@ -103,41 +103,43 @@ const Listing = () => {
       return;
     }
   
+    // Retrieve user info from localStorage
     const userInfo = JSON.parse(localStorage.getItem('user'));
-    const username = userInfo?.username;
-  
     
+    // // Check if userInfo exists and contains necessary fields
+    // if (!userInfo || !userInfo.id || !userInfo.username) {
+    //   toast.error("User information is missing. Please log in.");
+    //   return;
+    // }
+  
+    const userId = userInfo.id; 
+    const username = userInfo.username; 
+  
     const reservationDetails = {
-      accommodation: listing?._id, // Ensure this is the correct reference to your accommodation
-      user: username,
+      accommodationId: listing?.id, 
+      userId: userId, 
       checkInDate,
       checkOutDate,
+      property: listing?.listingName, 
+      bookedBy: username, 
     };
   
-    console.log("Reservation Details:", reservationDetails); // Debugging log
-  
     try {
-      const response = await axios.post("http://localhost:5000/api/reservations", reservationDetails);
-      setListing(response.data);
-      setErrorMessage("");  // Reset error message
-      setLoading(true);
+      // Make the reservation
+      await axios.post(`http://localhost:5000/api/reservations`, reservationDetails);
       toast.success("Reservation made successfully!");
-      navigate("/reservations", {
-        state: {
-          accommodation: listing._id,
-          user: listing.username,
-          checkInDate: checkInDate,
-          checkOutDate: checkOutDate,
-        },
-      });
+  
+      // Navigate to the reservations page with necessary data
+      navigate(`/reservations/host/${listing.hostId}`, { state: reservationDetails });
     } catch (error) {
       toast.error("Error making reservation. Please try again.");
       console.error("Reservation error:", error.response?.data || error.message);
     }
   };
   
-  
+  // Loading state handling
   if (!listing) return <div>Loading...</div>;
+   
 
   return (
     <>
@@ -154,50 +156,52 @@ const Listing = () => {
           </div>
         </div>
         <div className="image-grid">
-          {/* Display the first image as a larger item spanning two rows */}
-          {listing.images.length > 0 ? (
-            <>
-              <div className="item item1">
-                <img
-                  src={`http://localhost:5000/${listing.images[0]}`}
-                  alt={`pic 1`}
-                />
-              </div>
-              {/* Map through the remaining images for the grid */}
-              {listing.images.slice(1).map((imageUrl, index) => (
-                <div key={index} className="item">
-                  <img
-                    src={`http://localhost:5000/${imageUrl}`}
-                    alt={`pic ${index + 2}`}
-                  />
-                </div>
-              ))}
-            </>
-          ) : (
-            <p>No images available</p>
+  {/* Display the first image as a larger item spanning two rows */}
+  {listing.images.length > 0 ? (
+    <>
+      <div className="item item1">
+        <img
+          src={`http://localhost:5000/${listing.images[0]}`}
+          alt={`pic 1`}
+        />
+      </div>
+      {/* Map through the remaining images for the grid */}
+      {listing.images.slice(1).map((imageUrl, index) => (
+        <div key={index} className="item">
+          <img
+            src={`http://localhost:5000/${imageUrl}`}
+            alt={`pic ${index + 2}`}
+          />
+          {/* Display button on the last image */}
+          {index === listing.images.slice(1).length - 1 && (
+            <button className="last-image-button"><GridViewIcon className="icon-btn"/> Show all photos</button>
           )}
         </div>
-
-        <section>
-          <div className="listing place">{listing.listingName}</div>
-          <div className="room-info">
-            <p>
-              {listing.guests} guests .{listing.bedrooms} bedroom .
-              {listing.bathrooms} bathroom .{listing.beds} beds
-            </p>
-          </div>
-          <div className="user-info">
-            <img
+      ))}
+    </>
+  ) : (
+    <p>No images available</p>
+  )}
+</div>
+        <div class="flex-container">
+          <div class="item1">
+          <section className="listing-info-section">
+          <div className="listing place">
+            <p>{listing.listingName} Hosted by Zoe Barns</p>
+            <img  className="user-info-img"
               src="https://img.freepik.com/free-photo/cute-girl-with-brown-hair-red-jacket-3d-rendering_1142-54724.jpg?ga=GA1.1.2114915059.1725115900&semt=ais_hybrid"
               alt="user profile"
             />{" "}
-            hosted by Zoe Barns
+            
           </div>
+                 
+          <p className="room-info">
+              {listing.guests} guests .{listing.bedrooms} bedroom .
+              {listing.bathrooms} bathroom .{listing.beds} beds
+            </p>
+            
         </section>
         <hr />
-
-        <div class="flex-container">
-          <div class="item1">
             <section className="listing-info2">
               <div className="listing-info2-title">
                 <HomeOutlinedIcon />
@@ -344,7 +348,6 @@ const Listing = () => {
                       type="date"
                       className="date-input"
                       placeholder="Add date"
-                      value={checkInDate} // This should reference your state value directly
                       onChange={(e) => setCheckInDate(e.target.value)}
                     />
                   </div>
@@ -354,7 +357,6 @@ const Listing = () => {
                       type="date"
                       className="date-input"
                       placeholder="Add date"
-                      value={checkOutDate} // This should reference your state value directly
                       onChange={(e) => setCheckOutDate(e.target.value)}
                     />
                   </div>

@@ -49,7 +49,7 @@ const Signin = () => {
             role: signedIn.role
           })
         );
-  
+        localStorage.setItem("user", JSON.stringify(signedIn.user)); 
         // Navigate to the home page and show success toast
         navigate('/dashboard');
         toast.success('Sign in successful, welcome!');

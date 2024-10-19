@@ -1,60 +1,73 @@
 import React, { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router-dom";
 import axios from "axios";
+import { toast } from "react-toastify";
 
-const Reservations = () => {
-  const { state } = useLocation();
-  const { id } = useParams(); 
-  const [reservations, setReservations] = useState(state || null);
-  const { listing } = state || {}; // Destructure listing data from the passed state
+const Reservation = () => {
+  const [reservations, setReservations] = useState([]);
   const [loading, setLoading] = useState(false);
+  const userInfo = JSON.parse(localStorage.getItem('user')); 
+  const userRole = userInfo?.role; 
+  const userId = userInfo?._id;
+  const [error, setError] = useState('');
 
   useEffect(() => {
-    // If listing is not available from state, fetch it from the API
-    if (!listing) {
-      const fetchListing = async () => {
-        try {
-          const response = await axios.get(
-            `http://localhost:5000/api/reservations`
-          );
-          setReservations(response.data);
-        } catch (error) {
-          console.error("Error fetching listing data:", error);
+    const fetchReservations = async () => {
+      setLoading(true);
+      try {
+        let response;
+        if (userRole === 'host') {
+          // If logged in as a host, fetch reservations for the host
+          response = await axios.get(`http://localhost:5000/api/reservations/host/${userId}`);
+        } else if (userRole === 'user') {
+          // If logged in as a user, fetch reservations made by the user
+          response = await axios.get(`http://localhost:5000/api/reservations/user/${userId}`);
         }
-      };
-      fetchListing();
-    }
-  }, [id, listing]);
 
-  if (!listing) {
-    return <p>Loading listing details...</p>;
-  }
+        if (response && response.data) {
+          setReservations(response.data); 
+        } else {
+          toast.error("Invalid response format");
+        }
+      } catch (error) {
+        toast.error("Error fetching reservations: " + (error.response?.data || error.message));
+        setError("Failed to load reservations.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    if (userId) {
+      fetchReservations(); 
+    }
+  }, [userRole, userId]);
 
   return (
     <div>
-      <div className="table-content">
-        {loading ? (
-          <div>Loading...</div>
-        ) : (
-          <>
-            <h1>My Reservations</h1>
+      {loading ? (
+        <p>Loading reservations...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <div className="table-content">
+          <h1>My Reservations</h1>
+          {reservations.length > 0 ? (
             <table border={1}>
               <thead>
                 <tr>
                   <th>Booked by</th>
                   <th>Property</th>
-                  <th>Checkin</th>
-                  <th>Checkout</th>
+                  <th>Check-in</th>
+                  <th>Check-out</th>
                   <th>Actions</th>
                 </tr>
               </thead>
               <tbody>
                 {reservations.map((reservation) => (
-                  <tr key={reservation.id}>
-                    <td>{reservation.host.username}</td> {/* Assuming "bookedBy" is a field */}
-                    <td>{reservation.listingName}</td> {/* Correct this if the field name is different */}
-                    <td>{reservation.checkin}</td> {/* Fix the typo */}
-                    <td>{reservation.checkout}</td>
+                  <tr key={reservation._id}>
+                    <td>{reservation.bookedBy?.username}</td> 
+                    <td>{reservation.property}</td> 
+                    <td>{new Date(reservation.checkInDate).toLocaleDateString()}</td>
+                    <td>{new Date(reservation.checkOutDate).toLocaleDateString()}</td> 
                     <td>
                       <button className="delete">Delete</button>
                     </td>
@@ -62,12 +75,13 @@ const Reservations = () => {
                 ))}
               </tbody>
             </table>
-          </>
-        )}
-      </div>
+          ) : (
+            <p>No reservations found.</p>
+          )}
+        </div>
+      )}
     </div>
   );
 };
 
-export default Reservations;
- 
+export default Reservation;

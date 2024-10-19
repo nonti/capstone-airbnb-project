@@ -6,12 +6,12 @@ const reservationController = require('../controllers/reservation.controller');
 router.post('/', reservationController.createReservation);
 
 // Get reservations by host
-router.get('/host/:hostId', reservationController.getReservationByHost); // Use :hostId for clarity
+router.get('/host', reservationController.getReservationByHost); 
 
 // Get reservations by user
-router.get('/user/:userId', reservationController.getReservationByUser); // Use :userId for clarity
+router.get('/user/:userId', reservationController.getReservationByUser); 
 
 // Delete a reservation
-router.delete('/reservation/:id', reservationController.deleteReservation); // Singular route path for reservation
+router.delete('/:id', reservationController.deleteReservation); 
 
 module.exports = router;
