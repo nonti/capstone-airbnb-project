@@ -6,7 +6,7 @@ const reservationController = require('../controllers/reservation.controller');
 router.post('/', reservationController.createReservation);
 
 // Get reservations by host
-router.get('/host', reservationController.getReservationByHost); 
+router.get('/host/:hostId', reservationController.getReservationByHost); 
 
 // Get reservations by user
 router.get('/user/:userId', reservationController.getReservationByUser); 

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { toast } from "react-toastify";
+import './Reservation.css';
 
 const Reservation = () => {
   const [reservations, setReservations] = useState([]);
@@ -48,33 +49,35 @@ const Reservation = () => {
       ) : error ? (
         <p>{error}</p>
       ) : (
-        <div className="table-content">
+        <div className="reservation-content">
           <h1>My Reservations</h1>
           {reservations.length > 0 ? (
-            <table border={1}>
-              <thead>
-                <tr>
-                  <th>Booked by</th>
-                  <th>Property</th>
-                  <th>Check-in</th>
-                  <th>Check-out</th>
-                  <th>Actions</th>
-                </tr>
-              </thead>
-              <tbody>
-                {reservations.map((reservation) => (
-                  <tr key={reservation._id}>
-                    <td>{reservation.bookedBy?.username}</td> 
-                    <td>{reservation.property}</td> 
-                    <td>{new Date(reservation.checkInDate).toLocaleDateString()}</td>
-                    <td>{new Date(reservation.checkOutDate).toLocaleDateString()}</td> 
-                    <td>
-                      <button className="delete">Delete</button>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
+            
+            <table className="reservation-table">
+  <thead>
+    <tr>
+      <th>Booked by</th>
+      <th>Property</th>
+      <th>Check-in</th>
+      <th>Check-out</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    {reservations.map((reservation) => (
+      <tr key={reservation._id}>
+        <td>{reservation?.bookedBy}</td>
+        <td>{reservation.accommodationId?.property}</td>
+        <td>{new Date(reservation.checkInDate).toLocaleDateString()}</td>
+        <td>{new Date(reservation.checkOutDate).toLocaleDateString()}</td>
+        <td>
+          <button className="delete">Delete</button>
+        </td>
+      </tr>
+    ))}
+  </tbody>
+</table>
+
           ) : (
             <p>No reservations found.</p>
           )}
