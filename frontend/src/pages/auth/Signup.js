@@ -57,7 +57,7 @@ const Signup = () => {
   return (
     <div className='signin-signup-form'>
       <form onSubmit={handleSubmit}>
-        <h1>Sign Up</h1>
+        <h1 className='heading'>Sign Up</h1>
         <div className="input-container">
           <input
             type="text"
@@ -97,6 +97,7 @@ const Signup = () => {
       </form>
       <ToastContainer />
     </div>
+    
   );
 };
 

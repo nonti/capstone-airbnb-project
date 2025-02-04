@@ -118,11 +118,16 @@ const updateListing = async (req, res) => {
       description, bedrooms, bathrooms, beds, guests, amenities
     } = req.body;
 
+    const existingAccommodation = await Accommodation.findById(req.params.id);
+    if (!existingAccommodation) {
+      return res.status(404).json({ message: 'Accommodation not found' });
+    }
+
     // Update the listing using the id from req.params.id
     const updatedAccommodation = await Accommodation.findByIdAndUpdate(req.params.id, {
       title, location, listingName, price, description, bedrooms,
       bathrooms, beds, guests, amenities,
-    }, { new: true });
+    }, { new: true, runValidators: true });
 
     if (!updatedAccommodation) {
       return res.status(404).json({ message: 'Accommodation not found' });
@@ -135,4 +140,21 @@ const updateListing = async (req, res) => {
     console.log(err);
   }
 };
-module.exports = {createListing, upload, getListing, getListingById, updateListing};
+
+
+//delete listing
+const deleteListing = async(req, res) => {
+  try{
+    const accommodation = await Accommodation.findByIdAndDelete(req.params.id);
+    if(!accommodation) {
+      return res.status(404).json({ message: 'Accommodation not found' });
+    }
+    res.status(200).json({message: 'Accommodation deleted successfully'});
+  }catch(err){
+    res.status(500).json({message: 'Failed to delete listing', error: err.message});
+    console.log(err);
+  }
+}
+
+
+module.exports = {createListing, upload, getListing, getListingById, updateListing, deleteListing};

@@ -40,8 +40,9 @@ const Signin = () => {
       if (signedIn && signedIn.user && signedIn.token) {
         // Set the login status in local storage
         localStorage.setItem("isLoggedIn", "true");
-        localStorage.setItem("token", signedIn.token); // Optionally store the token
-  
+        localStorage.setItem("token", signedIn.token);
+         
+        
         dispatch(
           setSignIn({
             user: signedIn.user,
@@ -50,8 +51,11 @@ const Signin = () => {
           })
         );
         localStorage.setItem("user", JSON.stringify(signedIn.user)); 
-        // Navigate to the home page and show success toast
-        navigate('/dashboard');
+        if (signedIn.role === 'user') {
+          navigate(`reservations/user/${signedIn.user._id}`);
+        } else {
+          navigate('/dashboard');
+        }
         toast.success('Sign in successful, welcome!');
       } else {
         toast.error('Sign in failed, please try again');
@@ -59,7 +63,6 @@ const Signin = () => {
     } catch (err) {
       console.error(err);
       toast.error('Sign in failed, please try again');
-      // No need to navigate here, as the user is already on the sign-in page
     }
   };
   

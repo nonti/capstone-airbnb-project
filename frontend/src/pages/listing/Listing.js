@@ -79,7 +79,7 @@ const Listing = () => {
 
   if (!listing) {
     return <p>Loading listing details...</p>;
-  } // Re-fetch when listingId changes
+  } 
 
 
   const handleGuestChange = (action) => {
@@ -192,7 +192,6 @@ const Listing = () => {
               src="https://img.freepik.com/free-photo/cute-girl-with-brown-hair-red-jacket-3d-rendering_1142-54724.jpg?ga=GA1.1.2114915059.1725115900&semt=ais_hybrid"
               alt="user profile"
             />{" "}
-            
           </div>
                  
           <p className="room-info">
@@ -320,7 +319,6 @@ const Listing = () => {
       <h1>7 nights in New York</h1>
       <p>Start Date: {state.startDate}</p>
       <p>End Date: {state.endDate}</p>
-
       
     </section>
           </div>
@@ -585,7 +583,6 @@ const Listing = () => {
 
         </section>
         <hr />
-
 
         <section className="profile-text">
           <div className="hosted-by">

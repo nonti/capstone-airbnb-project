@@ -11,6 +11,7 @@ const path = require('path');
 
 //MIDDLEWARE
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use(cors({
   origin: 'http://localhost:3000',

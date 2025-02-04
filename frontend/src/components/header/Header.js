@@ -31,9 +31,9 @@ const Header = () => {
   const isListingPage = listingPath.includes(location.pathname);
 
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("host") || localStorage.getItem("user"));
+    const storedUser = JSON.parse(localStorage.getItem("user")); 
     console.log("Retrieved User from Local Storage:", storedUser);
-    if (storedUser) {
+    if (storedUser && storedUser.role && storedUser.username) {
       setRole(storedUser.role);
       setUsername(storedUser.username);
       setUser(storedUser);
@@ -58,11 +58,12 @@ const Header = () => {
 
   const handleSignOut = () => {
     localStorage.removeItem("user");
-    localStorage.removeItem("host");
     setRole(null);
     setUsername(null);
     setUser(null);
-    navigate("/signin");
+    setTimeout(() => {
+      navigate("/");
+  }, 0);
   };
 
   const selectedLocation = location.state?.selectedLocation || "Anywhere";
@@ -72,7 +73,6 @@ const Header = () => {
   const checkOutDate = location.state?.checkOutDate
     ? new Date(location.state.checkOutDate)
     : null;
-  const guestCount = location.state?.guestCount || 1; // Default to 1 if not provided
 
   const formatDate = (date) => {
     return date ? date.toLocaleDateString() : "";
@@ -122,7 +122,7 @@ const Header = () => {
                             isHomePage ? "host-black" : "host-white"
                           }`}
                         >
-                          {role.username}
+                          {username}
                         </div>
                       ) : (
                         // Display "Become a host" for regular users
@@ -139,7 +139,7 @@ const Header = () => {
                           <div className="dropdown-content">
                             {role === "host" ? (
                               <>
-                                <span
+                               <span
                                   onClick={() => navigate("/reservations")}
                                   className="link"
                                 >
@@ -157,20 +157,30 @@ const Header = () => {
                                 >
                                   View Listings
                                 </span>
+                                <span
+                                  onClick={() => navigate("/")}
+                                  className="link"
+                                >
+                                  Sign Out
+                                </span>         
+                              
                               </>
                             ) : (
                               <>
-                                <span
-                                  onClick={() => navigate("/reservations")}
-                                  className="link"
-                                >
-                                  View Reservations
-                                </span>
+                                           
                               </>
-                            )}
-                            <span onClick={handleSignOut} className="link">
-                              Sign Out
-                            </span>
+                            )}  <span
+                            onClick={() => navigate("/signin")}
+                            className="link"
+                          >
+                            Sign In
+                          </span>
+                          <span
+                            onClick={() => navigate("/signup")}
+                            className="link"
+                          >
+                            Sign Up
+                          </span>
                           </div>
                           <AccountCircleIcon className="profile-icon" />
                         </div>
@@ -186,41 +196,26 @@ const Header = () => {
                   ) : (
                     <>
                       <Link to="/signin" className={`become-a-host ${isScrolled ? "host-black" : "host-white"}`}>
-                        <div
-                          className={`become-a-host ${
-                            isHomePage ? "host-black" : "host-white"
-                          }`}
-                        >
+                        <div className={`become-a-host ${isHomePage ? "host-black" : "host-white"}`}>
                           Become a host
                         </div>
                       </Link>
-                      <div
-                        className={`become-a-host ${
-                          isHomePage ? "host-white" : "host-black"
-                        }`}
-                      >
-                        <LanguageIcon
-                          className={`become-a-host ${
-                            isHomePage ? "host-white" : "host-black"
-                          }`}
-                          sx={{ fontSize: "1.3rem" }}
-                        />
+                      <div className={`become-a-host ${ isHomePage ? "host-white" : "host-black"}`} >
+                        <LanguageIcon className={`become-a-host ${isHomePage ? "host-white" : "host-black"}`} sx={{ fontSize: "1.3rem" }}/>
                       </div>
                       <div className="profile-div">
                         <div className="dropdown">
+                          
                           <MenuRoundedIcon className="dropbtn" />
                           <div className="dropdown-content">
-                            <span
-                              onClick={() => navigate("/signin")}
-                              className="link"
-                            >
-                              Sign In
-                            </span>
-                            <span
-                              onClick={() => navigate("/signup")}
-                              className="link"
-                            >
-                              Sign Up
+                          <span
+                                  onClick={() => navigate(`/reservations/user/${user.id}`)}
+                                  className="link"
+                                >
+                                  View Reservations
+                                </span>
+                            <span onClick={handleSignOut} className="link">
+                              Sign Out
                             </span>
                           </div>
                           <AccountCircleIcon className="profile-icon" />
@@ -292,7 +287,7 @@ const Header = () => {
                       <div className="dropdown-content">
                         {!user ? (
                           <>
-                            <span
+                           <span
                               onClick={() => navigate("/signin")}
                               className="link"
                             >
@@ -304,12 +299,32 @@ const Header = () => {
                             >
                               Sign Up
                             </span>
+                         
                           </>
                         ) : (
                           <>
+                           <span
+                                  onClick={() => navigate("/reservations")}
+                                  className="link"
+                                >
+                                  View Reservations
+                                </span>
+                                <span
+                                  onClick={() => navigate("/create-listing")}
+                                  className="link"
+                                >
+                                  Create Listing
+                                </span>
+                                <span
+                                  onClick={() => navigate("/listings")}
+                                  className="link"
+                                >
+                                  View Listings
+                                </span>
                             <span onClick={handleSignOut} className="link">
                               Sign Out
                             </span>
+                           
                           </>
                         )}
                       </div>

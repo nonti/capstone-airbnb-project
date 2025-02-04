@@ -46,11 +46,10 @@ const getReservationByHost = async (req, res) => {
 
   try {
     const reservations = await Reservation.find()
-      .populate({
-        path: 'accommodationId',
-        match: { host: hostId }, 
-      })
-      .populate('bookedBy', 'username'); 
+      .populate(
+       'accommodationId')
+      .populate('bookedBy', 'username')
+      
 
     const filteredReservations = reservations.filter(reservation => reservation.accommodationId !== null);
 
@@ -71,8 +70,9 @@ const getReservationByUser = async (req, res) => {
   try {
     // Find reservations made by this user
     const reservations = await Reservation.find({ bookedBy: userId })
-      .populate('accommodationId', 'listingName')  
-      .populate('bookedBy', 'username');      
+      .populate('accommodationId')  
+      .populate('bookedBy', 'username')  
+      .populate('property', 'listingName');
 
     res.status(200).json(reservations);
   } catch (error) {

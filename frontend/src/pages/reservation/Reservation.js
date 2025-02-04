@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import './Reservation.css';
 
 const Reservation = () => {
@@ -15,6 +15,7 @@ const Reservation = () => {
     const fetchReservations = async () => {
       setLoading(true);
       try {
+
         let response;
         if (userRole === 'host') {
           // If logged in as a host, fetch reservations for the host
@@ -23,7 +24,7 @@ const Reservation = () => {
           // If logged in as a user, fetch reservations made by the user
           response = await axios.get(`http://localhost:5000/api/reservations/user/${userId}`);
         }
-
+          console.log(response.data);
         if (response && response.data) {
           setReservations(response.data); 
         } else {
@@ -42,11 +43,23 @@ const Reservation = () => {
     }
   }, [userRole, userId]);
 
+  const handleDeleteReservation = async (reservationId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/reservations/delete/${reservationId}`);
+      setReservations((prevReservations) =>
+        prevReservations.filter((reservation) => reservation._id !== reservationId)
+      );
+      toast.success("Reservation deleted successfully!");
+    } catch (error) {
+      toast.error("Error deleting reservation: " + (error.response?.data || error.message));
+    }
+  };
+
   return (
     <div>
       {loading ? (
         <p>Loading reservations...</p>
-      ) : error ? (
+      ) : error ? (+
         <p>{error}</p>
       ) : (
         <div className="reservation-content">
@@ -67,11 +80,11 @@ const Reservation = () => {
     {reservations.map((reservation) => (
       <tr key={reservation._id}>
         <td>{reservation?.bookedBy}</td>
-        <td>{reservation.accommodationId?.property}</td>
+        <td>{reservation?.property}</td>
         <td>{new Date(reservation.checkInDate).toLocaleDateString()}</td>
         <td>{new Date(reservation.checkOutDate).toLocaleDateString()}</td>
         <td>
-          <button className="delete">Delete</button>
+          <button className="delete"  onClick={() => handleDeleteReservation(reservation._id)}>Delete</button>
         </td>
       </tr>
     ))}
@@ -83,6 +96,7 @@ const Reservation = () => {
           )}
         </div>
       )}
+      <ToastContainer autoClose={3000} />
     </div>
   );
 };
