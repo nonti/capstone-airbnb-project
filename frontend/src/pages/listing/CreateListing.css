@@ -7,10 +7,12 @@ form {
   margin: 0 auto;
   padding: 20px;
 }
+
 .heading {
   text-align: center;
   color:  #6900fa;
 }
+
 .form-group > input[type="text"],
 input[type="email"],
 input[type="number"],
@@ -70,6 +72,7 @@ textarea , select{
   gap: 40px;
  
 }
+
 .basic {
   display: flex;
   align-items: center;
@@ -127,6 +130,8 @@ textarea , select{
   gap: 10px;
   border-radius: 14px;
   width: 50%;
+  font-size: 16px;
+  font-weight: 600;
 }
 
 .cancel {
@@ -138,5 +143,7 @@ textarea , select{
   gap: 10px;
   border-radius: 14px;
   width: 50%;
+  font-size: 16px;
+  font-weight: 600;
 }
 

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import './Listings.css';
+import { toast, ToastContainer } from "react-toastify";
+import {useNavigate } from 'react-router-dom';
+
 const Listings = () => {
   const [locations, setLocations] = useState([]);
-
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchListings = async () => {
       try {
@@ -18,6 +21,24 @@ const Listings = () => {
 
     fetchListings();
   }, []);
+
+
+  const handleUpdateAccomodation = async (location) => {
+    navigate(`/create-listing`, {state: { listing: location}});
+  }
+
+  const handleDeleteAccommodation = async (accommodationId) => {
+    try {
+      await axios.delete(`http://localhost:5000/api/accommodations/delete/${accommodationId}`);
+      setLocations((prevlocation) => prevlocation.filter((location) => location._id !== accommodationId));
+    
+          toast.success("Reservation deleted successfully!");
+    
+  }catch (error) {
+    console.error("Error deleting accommodation:", error);
+    toast.error("Error deleting accommodation");
+  }
+};
 
   return (
     <>
@@ -48,8 +69,8 @@ const Listings = () => {
           </div>
           
              </div>
-             <button className="update">Update</button>
-             <button className="delete">Delete</button>
+             <button className="update" onClick= {() => handleUpdateAccomodation(location)}>Update</button>
+             <button className="delete" onClick={() => handleDeleteAccommodation(location._id)}>Delete</button>
              <hr/>
 
     </>
@@ -57,7 +78,7 @@ const Listings = () => {
       ))
     )}
 
-    
+    <ToastContainer autoClose={3000} />
   </div>
 
   </>
