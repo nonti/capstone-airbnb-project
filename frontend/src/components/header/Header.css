@@ -24,6 +24,7 @@
   color: #fff; 
 }
 
+
 .logo {
   width: 140px;
   margin-left: 50px;
@@ -32,10 +33,10 @@
 .header-text  {
   display: flex;
   justify-content: center;
-  gap: 20px;
+  gap: 10px;
   font-size: 20px;
   font-weight: 400;
-  margin: 0 0 0 150px;
+  margin: 0 10px 0 130px;
 }
 
 .header-text p {
@@ -54,7 +55,7 @@
   color: #fff;
 }
 
-.host-white {
+.host-white.scrolled {
   color: #000;
   text-decoration: none;
 }
@@ -243,7 +244,7 @@
 }
 
 .header-search {
-  width: 284px;
+  width: 450px;
   height: 33px;
   padding: 14px 32px;
   display: flex;
@@ -254,25 +255,31 @@
 
 .search-input > select {
   border: none;
+  width: 100%;
   outline: none;
-  padding: 0;
+  padding: 0px;
   background-color: transparent;
   font-size: 16px;
-  color: #000;
-}      
+  color: #6a6a6a;
+  margin-bottom: 0.8rem;
+}    
 
 option{
-  color: #000;
+  color: #6a6a6a;
 }
               
-.input-icon {
-  display: flex;
-}
+
 .search-where > div {
-  padding: 1px;
-  margin: 0rem 0.4rem;
+  padding: 2px;
+  margin: 0.3rem 0.5rem;
   width: 140px;
 } 
+
+.search-where {
+  display: block;
+  width: 100%;
+  padding-top: 0.8rem;
+}
 
 
 .location-dropdown-icon {
@@ -287,7 +294,7 @@ option{
   border: none;
   outline: none;
   width: 150px;
-  color: #6a6a6a;
+  color: #000;
 }
 
 .border-divider {
@@ -340,8 +347,8 @@ option{
 .search-who {
   display: block;
   width: 100%;
-  margin: 0.3rem 0.9rem;
-  padding-top: 0.9rem;
+  margin: 0.5rem 0.9rem;
+  padding-top: 0.4rem;
 }
 
 .search .search-icon  {

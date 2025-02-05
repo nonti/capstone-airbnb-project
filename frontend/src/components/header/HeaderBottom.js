@@ -60,14 +60,14 @@ const HeaderBottom = () => {
     <div className="header-bottom">
       <div className="header-search">
         <div className="search-where">
-          <div>Location</div>
           <div className="search-input">
+          <div>Location</div>
             <select
               id="location-select"
               value={selectedLocation}
               onChange={handleSelectChange}
             >
-              <option value="">Select location</option>
+              <option value="">Search </option>
               <option value="all">All</option>
               {locations.map((location) => (
                 <option key={location._id} value={location.location}>

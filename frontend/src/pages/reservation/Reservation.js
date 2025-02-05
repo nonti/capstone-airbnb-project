@@ -20,7 +20,7 @@ const Reservation = () => {
         if (userRole === 'host') {
           // If logged in as a host, fetch reservations for the host
           response = await axios.get(`http://localhost:5000/api/reservations/host/${userId}`);
-        } else if (userRole === 'user') {
+        } else  {
           // If logged in as a user, fetch reservations made by the user
           response = await axios.get(`http://localhost:5000/api/reservations/user/${userId}`);
         }

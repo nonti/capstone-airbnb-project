@@ -167,9 +167,7 @@ const Header = () => {
                               </>
                             ) : (
                               <>
-                                           
-                              </>
-                            )}  <span
+                                <span
                             onClick={() => navigate("/signin")}
                             className="link"
                           >
@@ -180,7 +178,9 @@ const Header = () => {
                             className="link"
                           >
                             Sign Up
-                          </span>
+                          </span>        
+                              </>
+                            )}  
                           </div>
                           <AccountCircleIcon className="profile-icon" />
                         </div>

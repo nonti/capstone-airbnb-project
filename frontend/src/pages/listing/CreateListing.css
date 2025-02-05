@@ -25,13 +25,22 @@ textarea , select{
 }
 
 .form-group >  input[type="text"]:focus,{
-  border: 1px solid #6900fa;
+  outline-color: rgb(250, 0, 217);
+}
+
+.form-group >  input:focus,
+textarea:focus, select:focus{
+  outline-color: rgb(250, 0, 217);
 }
 
 .amenit {
   display: flex;
   margin-top: 10px;
   gap: 15px;
+}
+
+.amenit > input:focus {
+  outline-color: rgb(250, 0, 217);
 }
 
 .amenit > input[type="text"] {
@@ -70,7 +79,6 @@ textarea , select{
   display: flex;
   flex-wrap: nowrap;
   gap: 40px;
- 
 }
 
 .basic {
@@ -88,6 +96,7 @@ textarea , select{
   align-items: center;
   gap: 9px;
   font-size: 16px;
+  color:  #ff69b4;
 }
 
 .photos {
@@ -112,6 +121,15 @@ textarea , select{
 .photo > img {
   width: 100%;
   height: 100%;
+}
+
+.delete-icon {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  font-size: 24px;
+  color: #6900fa;
+  cursor: pointer;
 }
 
 .create-cancel{

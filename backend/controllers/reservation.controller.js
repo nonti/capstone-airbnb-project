@@ -69,10 +69,19 @@ const getReservationByUser = async (req, res) => {
 
   try {
     // Find reservations made by this user
-    const reservations = await Reservation.find({ bookedBy: userId })
+    const reservations = await Reservation.find({userId})
       .populate('accommodationId')  
+      .populate('userId', '_id')
       .populate('bookedBy', 'username')  
       .populate('property', 'listingName');
+
+      const filteredReservations = reservations.filter(reservation => reservation.accommodationId !== null) || [];
+
+    if (filteredReservations.length === 0) {
+      return res.status(404).json({ message: 'No reservations found for this user' });
+    }
+
+    res.status(200).json(filteredReservations);
 
     res.status(200).json(reservations);
   } catch (error) {

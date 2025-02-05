@@ -3,7 +3,7 @@ import "./CreateListing.css";
 import { RemoveCircleOutline, AddCircleOutline } from "@mui/icons-material";
 import PhotoLibraryOutlinedIcon from "@mui/icons-material/PhotoLibraryOutlined";
 import { DragDropContext, Draggable, Droppable } from "react-beautiful-dnd";
-import DeleteOutlineOutlinedIcon from "@mui/icons-material/DeleteOutlineOutlined";
+import DeleteOutlineOutlinedIcon from '@mui/icons-material/DeleteOutlineOutlined';
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -386,31 +386,13 @@ const CreateListing = () => {
                               }
                               alt="Uploaded"
                             />
-                            <DeleteOutlineOutlinedIcon
+                            <DeleteOutlineOutlinedIcon className="delete-icon"
                               onClick={() => handleRemovePhoto(index)}
                             />
                           </div>
                         )}
                       </Draggable>
                     ))}
-
-                    {provided.placeholder}
-                    {photos.length < 5 && (
-                      <>
-                        <input
-                          id="image"
-                          type="file"
-                          multiple
-                          onChange={handleUpload}
-                          accept="image/*" // Accept image files only
-                        />
-                        <label htmlFor="image" className="together">
-                          <div className="icon">
-                            <PhotoLibraryOutlinedIcon />
-                          </div>
-                        </label>
-                      </>
-                    )}
                   </div>
                 )}
               </Droppable>

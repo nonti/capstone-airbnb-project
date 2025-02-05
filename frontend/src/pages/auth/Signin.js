@@ -54,7 +54,7 @@ const Signin = () => {
         if (signedIn.role === 'user') {
           navigate(`reservations/user/${signedIn.user._id}`);
         } else {
-          navigate('/dashboard');
+          navigate(`/dashboard`);
         }
         toast.success('Sign in successful, welcome!');
       } else {
